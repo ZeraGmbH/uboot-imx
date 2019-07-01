@@ -184,7 +184,14 @@
 #endif
 
 #define OPT_ENV_SETTINGS \
-	"optargs=setenv bootargs ${bootargs} ${kernelargs};\0"
+	"optargs="\
+		"i2c dev 0; " \
+		"if i2c probe 0x71; then " \
+			"setenv zera_device mt310s2; " \
+		"else " \
+			"setenv zera_device com5003; " \
+		"fi; " \
+		"setenv bootargs ${bootargs} ${kernelargs} consoleblank=0 zera_device=${zera_device};\0"
 
 #define VIDEO_ENV_SETTINGS \
 	"videoargs=" \
