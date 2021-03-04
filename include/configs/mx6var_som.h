@@ -191,7 +191,7 @@
 		"else " \
 			"setenv zera_device com5003; " \
 		"fi; " \
-		"setenv bootargs ${bootargs} ${kernelargs} consoleblank=0 zera_device=${zera_device};\0"
+		"setenv bootargs ${bootargs} ${kernelargs} consoleblank=0 fbcon=logo-pos:center vt.global_cursor_default=0 zera_device=${zera_device};\0"
 
 #define VIDEO_ENV_SETTINGS \
 	"videoargs=" \
