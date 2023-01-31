@@ -21,11 +21,6 @@ void zenux_device_detect(void)
 		deduceSettingsFromSysController();
 }
 
-enum DeviceTypes getDevType(void)
-{
-	return devInfo.devType;
-}
-
 void assumeInitialCom5003(void)
 {
 	puts("Syscontroller not found - assuming COM5003 / initial LCD\n");

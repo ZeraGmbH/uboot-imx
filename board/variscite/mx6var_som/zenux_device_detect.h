@@ -16,8 +16,6 @@ enum LcdTypes
 };
 
 void zenux_device_detect(void);
-enum DeviceTypes getDevType(void);
-enum LcdTypes getLcdType(void);
 
 #endif /* CONFIG_SPL_BUILD */
 
