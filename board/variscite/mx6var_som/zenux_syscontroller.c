@@ -8,14 +8,8 @@
 
 bool probeSysController(void)
 {
-	bool ret;
-	int oldbus = i2c_get_bus_num();
-
 	i2c_set_bus_num(SYS_I2C_NUM);
-	ret = (0 == i2c_probe(SYS_I2C_ADR));
-
-	i2c_set_bus_num(oldbus);
-	return ret;
+	return 0 == i2c_probe(SYS_I2C_ADR);
 }
 
 #endif
