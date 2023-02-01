@@ -5,6 +5,23 @@
 
 void assumeInitialCom5003(void);
 void deduceSettingsFromSysController(void);
+void setEnvMachine(void);
+
+enum DeviceTypes
+{
+	DEV_COM5003,
+	DEV_MT310S2
+};
+char* envDeviceNames[] = {
+	"com5003",
+	"mt310s2"
+};
+
+enum LcdTypes
+{
+	LCD_COM5003_INITIAL,
+	LCD_MT310S2_INITIAL
+};
 
 struct DeviceInfo
 {
@@ -19,6 +36,7 @@ void zenux_device_detect(void)
 		assumeInitialCom5003();
 	else
 		deduceSettingsFromSysController();
+	setEnvMachine();
 }
 
 void assumeInitialCom5003(void)
@@ -34,6 +52,14 @@ void deduceSettingsFromSysController(void)
 	puts("Syscontroller found - assuming MT310s2\n");
 	devInfo.devType = DEV_MT310S2;
 	devInfo.lcdType = LCD_MT310S2_INITIAL;
+}
+
+void setEnvMachine(void)
+{
+	const char* envVarName = "zera_device";
+	const char* envDeviceName = envDeviceNames[devInfo.devType];
+	printf("Set envitonment variable '%s' to '%s'\n", envVarName, envDeviceName);
+	env_set(envVarName, envDeviceName);
 }
 
 #endif /* CONFIG_SPL_BUILD */
