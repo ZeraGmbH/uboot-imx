@@ -6,6 +6,7 @@
 void assumeInitialCom5003(void);
 void deduceSettingsFromSysController(void);
 void setEnvMachine(void);
+void setEnvLcd(void);
 
 enum DeviceTypes
 {
@@ -22,6 +23,10 @@ enum LcdTypes
 	LCD_COM5003_INITIAL,
 	LCD_MT310S2_INITIAL
 };
+char* envLcdDeviceTreeFileNames[] = {
+	"imx6q-var-som-zera-com.dtb",
+	"imx6q-var-som-zera-mt.dtb"
+};
 
 struct DeviceInfo
 {
@@ -37,6 +42,7 @@ void zenux_device_detect(void)
 	else
 		deduceSettingsFromSysController();
 	setEnvMachine();
+	setEnvLcd();
 }
 
 void assumeInitialCom5003(void)
@@ -58,8 +64,16 @@ void setEnvMachine(void)
 {
 	const char* envVarName = "zera_device";
 	const char* envDeviceName = envDeviceNames[devInfo.devType];
-	printf("Set envitonment variable '%s' to '%s'\n", envVarName, envDeviceName);
+	printf("Set environment variable '%s' to '%s'\n", envVarName, envDeviceName);
 	env_set(envVarName, envDeviceName);
+}
+
+void setEnvLcd(void)
+{
+	const char* envVarName = "fdt_file";
+	const char* envLcdDeviceTreeFileName = envLcdDeviceTreeFileNames[devInfo.lcdType];
+	printf("Set environment variable '%s' to '%s'\n", envVarName, envLcdDeviceTreeFileName);
+	env_set(envVarName, envLcdDeviceTreeFileName);
 }
 
 #endif /* CONFIG_SPL_BUILD */
