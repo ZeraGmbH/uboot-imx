@@ -8,7 +8,7 @@ u8 calcBlockCRC(u8* pBuff, u16 iBuffLen)
 {
     u8 crc = 0;
     for (u16 i = 0; i < iBuffLen; i++)
-        crc = CalcByteCRC(crc, pBuff[i]);
+        crc = calcByteCRC(crc, pBuff[i]);
     return crc;
 }
 
