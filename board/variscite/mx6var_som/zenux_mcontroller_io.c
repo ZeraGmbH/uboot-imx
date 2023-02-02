@@ -1,14 +1,13 @@
 #include "zenux_mcontroller_io.h"
 #include "zenux_mcontroller_crc.h"
-#include <common.h>
-#include <i2c.h>
 
 static void generateCmdRequest(u16 cmdId, u8 subDevice, u8* param, u16 paramLen, u8 *buffToSend);
 
-u16 readCmd(u16 cmdId, u8 *readBuff)
+u16 readCmd(struct udevice *dev, u16 cmdId, u8 *readBuff)
 {
     u8 requestBuff[128];
     u16 bytesRead = 0;
+    generateCmdRequest(cmdId, 0, NULL, 0, requestBuff);
 
     return bytesRead;
 }
