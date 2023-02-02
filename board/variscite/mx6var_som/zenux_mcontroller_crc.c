@@ -4,10 +4,10 @@
 #include <common.h>
 #include <i2c.h>
 
-u8 calcBlockCRC(u8* pBuff, u32 iBuffLen)
+u8 calcBlockCRC(u8* pBuff, u16 iBuffLen)
 {
     u8 crc = 0;
-    for (u32 i = 0; i < iBuffLen; i++)
+    for (u16 i = 0; i < iBuffLen; i++)
         crc = CalcByteCRC(crc, pBuff[i]);
     return crc;
 }

@@ -6,6 +6,8 @@
 #define SYS_I2C_NUM 0x00
 #define SYS_I2C_ADR 0x22
 
+const u16 cmdIdGetCtrlVersion = 0x0003;
+
 bool probeSysController(void)
 {
 	i2c_set_bus_num(SYS_I2C_NUM);

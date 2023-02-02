@@ -7,6 +7,7 @@
 #ifndef CONFIG_SPL_BUILD
 
 bool probeSysController(void);
+bool readCTRLVersion(char* receivedVersion);
 
 #endif /* CONFIG_SPL_BUILD */
 
