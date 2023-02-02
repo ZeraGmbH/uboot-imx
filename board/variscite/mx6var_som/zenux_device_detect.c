@@ -55,6 +55,11 @@ void assumeInitialCom5003(void)
 void deduceSettingsFromSysController(void)
 {
 	// TODO: COM5003 new/MT310s2
+	char* receivedVersion[128];
+	if(readCTRLVersion(receivedVersion))
+		puts("Syscontroller version\n");
+	else
+		puts("Syscontroller read version failed!\n");
 	puts("Syscontroller found - assuming MT310s2\n");
 	devInfo.devType = DEV_MT310S2;
 	devInfo.lcdType = LCD_MT310S2_INITIAL;
