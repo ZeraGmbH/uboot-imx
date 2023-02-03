@@ -565,7 +565,7 @@ static int bus_i2c_read(struct mxc_i2c_bus *i2c_bus, u8 chip, u32 addr,
  * Write data to I2C device
  */
 static int bus_i2c_write(struct mxc_i2c_bus *i2c_bus, u8 chip, u32 addr,
-			 int alen, const u8 *buf, int len)
+			 int alen, const u8 *buf, int len, int no_stop_count)
 {
 	int ret = 0;
 
@@ -575,7 +575,8 @@ static int bus_i2c_write(struct mxc_i2c_bus *i2c_bus, u8 chip, u32 addr,
 
 	ret = i2c_write_data(i2c_bus, chip, buf, len);
 
-	i2c_imx_stop(i2c_bus);
+	if(no_stop_count == 0)
+		i2c_imx_stop(i2c_bus);
 
 	return ret;
 }
@@ -623,7 +624,10 @@ static int mxc_i2c_write(struct i2c_adapter *adap, uint8_t chip,
 				uint addr, int alen, uint8_t *buffer,
 				int len)
 {
-	return bus_i2c_write(i2c_get_base(adap), chip, addr, alen, buffer, len);
+	int ret = bus_i2c_write(i2c_get_base(adap), chip, addr, alen, buffer, len, adap->no_stop_count);
+	if(adap->no_stop_count > 0)
+		adap->no_stop_count--;
+	return ret;
 }
 
 /*
@@ -631,7 +635,7 @@ static int mxc_i2c_write(struct i2c_adapter *adap, uint8_t chip,
  */
 static int mxc_i2c_probe(struct i2c_adapter *adap, uint8_t chip)
 {
-	return bus_i2c_write(i2c_get_base(adap), chip, 0, 0, NULL, 0);
+	return bus_i2c_write(i2c_get_base(adap), chip, 0, 0, NULL, 0, 0);
 }
 
 int __enable_i2c_clk(unsigned char enable, unsigned i2c_num)
@@ -703,6 +707,7 @@ void i2c_early_init_f(void)
  */
 static void mxc_i2c_init(struct i2c_adapter *adap, int speed, int slaveaddr)
 {
+	adap->no_stop_count = 0;
 	bus_i2c_init(adap->hwadapnr, speed, slaveaddr, NULL, NULL);
 }
 

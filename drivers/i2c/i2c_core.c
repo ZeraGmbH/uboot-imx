@@ -297,6 +297,14 @@ int i2c_read(uint8_t chip, unsigned int addr, int alen,
 int i2c_write(uint8_t chip, unsigned int addr, int alen,
 				uint8_t *buffer, int len)
 {
+	I2C_ADAP->no_stop_count = 0;
+	return I2C_ADAP->write(I2C_ADAP, chip, addr, alen, buffer, len);
+}
+
+int i2c_write_no_stop(uint8_t chip, unsigned int addr, int alen,
+				uint8_t *buffer, int len)
+{
+	I2C_ADAP->no_stop_count = 1;
 	return I2C_ADAP->write(I2C_ADAP, chip, addr, alen, buffer, len);
 }
 
