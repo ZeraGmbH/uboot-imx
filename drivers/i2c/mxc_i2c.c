@@ -574,6 +574,7 @@ static int bus_i2c_write(struct mxc_i2c_bus *i2c_bus, u8 chip, u32 addr,
 		return ret;
 
 	ret = i2c_write_data(i2c_bus, chip, buf, len);
+	printf("bus_i2c_write: ret: %i / no_stop_count: %i\n", ret, no_stop_count);
 
 	if(no_stop_count == 0)
 		i2c_imx_stop(i2c_bus);
