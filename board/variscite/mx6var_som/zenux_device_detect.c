@@ -37,17 +37,20 @@ struct DeviceInfo
 void zenux_device_detect(void)
 {
 	puts("ZENUX device detection started...\n");
-	if(!probeSysController())
+	if(!probeSysController()) {
+		puts("Syscontroller not found - assuming COM5003 / initial LCD\n");
 		assumeInitialCom5003();
-	else
+	}
+	else {
+		puts("Syscontroller found - deduce more details...\n");
 		deduceSettingsFromSysController();
+	}
 	setEnvMachine();
 	setEnvLcd();
 }
 
 void assumeInitialCom5003(void)
 {
-	puts("Syscontroller not found - assuming COM5003 / initial LCD\n");
 	devInfo.devType = DEV_COM5003;
 	devInfo.lcdType = LCD_COM5003_INITIAL;
 }
@@ -60,7 +63,6 @@ void deduceSettingsFromSysController(void)
 		puts("Syscontroller version\n");
 	else
 		puts("Syscontroller read version failed!\n");
-	puts("Syscontroller found - assuming MT310s2\n");
 	devInfo.devType = DEV_MT310S2;
 	devInfo.lcdType = LCD_MT310S2_INITIAL;
 }
