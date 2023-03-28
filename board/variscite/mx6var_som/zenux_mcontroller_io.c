@@ -46,7 +46,7 @@ static u16 generateCmdRequest(u16 cmdId, u8 subDevice, u8* param, u16 paramLen, 
     *currBuff++ = (cmdId >> 8) & 0xFF;
     *currBuff++ = cmdId & 0xFF;
     // sub device
-    *buffToSend++ = subDevice;
+    *currBuff++ = subDevice;
     // param
     for (i = 0; i < paramLen; i++)
         *currBuff++ = *param++;
