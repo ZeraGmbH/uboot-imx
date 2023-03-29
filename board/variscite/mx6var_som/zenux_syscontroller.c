@@ -21,7 +21,7 @@ bool readCTRLVersion(char* receivedVersion)
 {
     i2c_set_bus_num(SYS_I2C_NUM);
     u16 lenReturned = readCmd(SYS_I2C_ADR, cmdIdGetCtrlVersion, (u8*)receivedVersion);
-    receivedVersion[lenReturned] = 0;
+    receivedVersion[lenReturned-1] = 0; // last is checksum
     return lenReturned > 0;
 }
 

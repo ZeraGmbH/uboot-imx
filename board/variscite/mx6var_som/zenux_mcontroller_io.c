@@ -18,11 +18,18 @@ u16 readCmd(uint i2cAddr, u16 cmdId, u8 *readBuff)
                 puts("Cannot not read more than 128 bytes!\n");
                 bytesRead = 0;
             }
-            if(bytesRead == 0)
+            if(bytesRead <= 1) { // just checksum is not enough
                 printf("No data to read - is comannd ID %04X correct?\n", cmdId);
-            else if(i2c_read(i2cAddr, 0, -1, readBuff, bytesRead)) { // <- ctl data
-                puts("Could not read data from I2c!\n");
                 bytesRead = 0;
+            }
+            else {
+                if(!i2c_read(i2cAddr, 0, -1, readBuff, bytesRead)) { // <- ctl data
+                    // TODO checksum & their error handling
+                }
+                else {
+                    puts("Could not read data from I2c!\n");
+                    bytesRead = 0;
+                }
             }
         }
         else
@@ -38,6 +45,7 @@ static u16 decodeRequestResponse(u8 *response)
     u16 len = 0;
     if(response[0] == 0 && response[1] == 0) {
         len = response[2] * 256 + response[3];
+        // TODO checksum & their error handling
     }
     else
         printf("I2c request returned error mask %02X%02X!\n", response[0], response[1]);

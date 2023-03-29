@@ -58,9 +58,10 @@ void assumeInitialCom5003(void)
 void deduceSettingsFromSysController(void)
 {
 	// TODO: COM5003 new/MT310s2
+	// Just an temporary test for controller I/O working
 	char* receivedVersion[128];
 	if(readCTRLVersion(receivedVersion))
-		puts("Syscontroller version\n");
+		printf("Syscontroller version %s\n", receivedVersion);
 	else
 		puts("Syscontroller read version failed!\n");
 	devInfo.devType = DEV_MT310S2;
