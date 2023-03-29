@@ -12,7 +12,7 @@ u16 readCmd(uint i2cAddr, u16 cmdId, u8 *readBuff)
     u16 reqLen = generateCmdRequest(cmdId, 0, NULL, 0, requestBuff);
 
     if(!i2c_write(i2cAddr, 0, 0, requestBuff, reqLen)) {
-        if(!i2c_read(i2cAddr, 0, 0, requestResponse, 5)) {
+        if(!i2c_read(i2cAddr, 0, -1, requestResponse, 5)) {
             bytesRead = decodeRequestResponse(requestResponse);
         }
         else
