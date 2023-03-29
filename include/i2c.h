@@ -592,7 +592,6 @@ struct i2c_adapter {
 	int		init_done;
 	int		hwadapnr;
 	char		*name;
-	int		no_stop_count;
 };
 
 #define U_BOOT_I2C_MKENT_COMPLETE(_init, _probe, _read, _write, \
@@ -742,8 +741,6 @@ int i2c_read(uint8_t chip, unsigned int addr, int alen,
 				uint8_t *buffer, int len);
 
 int i2c_write(uint8_t chip, unsigned int addr, int alen,
-				uint8_t *buffer, int len);
-int i2c_write_no_stop(uint8_t chip, unsigned int addr, int alen,
 				uint8_t *buffer, int len);
 
 /*
