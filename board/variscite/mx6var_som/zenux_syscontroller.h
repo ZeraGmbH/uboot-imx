@@ -8,6 +8,8 @@
 
 bool probeSysController(void);
 bool readCTRLVersion(char* receivedVersion);
+bool readInstrumentClass(char* receivedClass);
+bool readDisplayType(u8* receivedType);
 
 #endif /* CONFIG_SPL_BUILD */
 

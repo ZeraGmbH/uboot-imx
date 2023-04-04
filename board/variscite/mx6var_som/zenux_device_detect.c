@@ -1,6 +1,7 @@
 #ifndef CONFIG_SPL_BUILD
 #include "zenux_device_detect.h"
 #include "zenux_syscontroller.h"
+#include "zenux_mcontroller_io.h"
 #include <common.h>
 
 void assumeInitialCom5003(void);
@@ -55,17 +56,37 @@ void assumeInitialCom5003(void)
 	devInfo.lcdType = LCD_COM5003_INITIAL;
 }
 
-void deduceSettingsFromSysController(void)
+
+static void logCtrlVersion(void)
 {
-	// TODO: COM5003 new/MT310s2
-	// Just an temporary test for controller I/O working
-	char* receivedVersion[128];
-	if(readCTRLVersion(receivedVersion))
-		printf("Syscontroller version %s\n", receivedVersion);
+	u8* receivedData[MAX_READ_LEN_ZHARD];
+	if(readCTRLVersion(receivedData))
+		printf("Syscontroller version: %s\n", receivedData);
 	else
 		puts("Syscontroller read version failed!\n");
-	devInfo.devType = DEV_MT310S2;
-	devInfo.lcdType = LCD_MT310S2_INITIAL;
+}
+
+void deduceSettingsFromSysController(void)
+{
+	logCtrlVersion();
+
+	u8* receivedData[MAX_READ_LEN_ZHARD];
+	if(readInstrumentClass(receivedData)) {
+		printf("Instrument class: %s\n", receivedData);
+		// TODO Temp
+		devInfo.devType = DEV_COM5003;
+		devInfo.lcdType = LCD_COM5003_INITIAL;
+	}
+	else {
+		puts("Instrument class read failed! Assume MT310s2\n");
+		devInfo.devType = DEV_MT310S2;
+		devInfo.lcdType = LCD_MT310S2_INITIAL;
+	}
+	if(readDisplayType(receivedData)) {
+		printf("Display type: %s\n", receivedData);
+	}
+	else
+		puts("Display type read failed! Assume MT310s2\n");
 }
 
 void setEnvMachine(void)
