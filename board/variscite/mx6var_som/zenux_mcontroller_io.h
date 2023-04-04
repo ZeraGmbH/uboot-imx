@@ -9,6 +9,8 @@
 
 #ifndef CONFIG_SPL_BUILD
 
+#define MAX_READ_LEN_ZHARD 128
+
 u16 readCmd(uint i2cAddr, u16 cmdId, u8 *readBuff);
 
 #endif
