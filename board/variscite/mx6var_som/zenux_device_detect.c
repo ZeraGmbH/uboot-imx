@@ -35,10 +35,22 @@ struct DeviceInfo
 	enum LcdTypes lcdType;
 } devInfo;
 
+static bool logCtrlVersion(void)
+{
+	u8* receivedData[MAX_READ_LEN_ZHARD];
+	if(readCTRLVersion(receivedData)) {
+		printf("Syscontroller version: %s\n", receivedData);
+		return true;
+	}
+	puts("Syscontroller read version failed!\n");
+	return false;
+}
+
+
 void zenux_device_detect(void)
 {
 	puts("ZENUX device detection started...\n");
-	if(!probeSysController()) {
+	if(!logCtrlVersion()) {
 		puts("Syscontroller not found - assuming COM5003 / initial LCD\n");
 		assumeInitialCom5003();
 	}
@@ -56,20 +68,8 @@ void assumeInitialCom5003(void)
 	devInfo.lcdType = LCD_COM5003_INITIAL;
 }
 
-
-static void logCtrlVersion(void)
-{
-	u8* receivedData[MAX_READ_LEN_ZHARD];
-	if(readCTRLVersion(receivedData))
-		printf("Syscontroller version: %s\n", receivedData);
-	else
-		puts("Syscontroller read version failed!\n");
-}
-
 void deduceSettingsFromSysController(void)
 {
-	logCtrlVersion();
-
 	u8* receivedData[MAX_READ_LEN_ZHARD];
 	if(readInstrumentClass(receivedData)) {
 		printf("Instrument class: %s\n", receivedData);
