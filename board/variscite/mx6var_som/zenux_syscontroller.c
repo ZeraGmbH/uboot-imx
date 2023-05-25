@@ -38,16 +38,12 @@ static bool readString(char* stringBuffer, const u16 cmdId)
 
 bool readCTRLVersion(char* receivedVersion)
 {
-    i2c_set_bus_num(SYS_I2C_NUM);
-    u16 lenReturned = readCmd(SYS_I2C_ADR, cmdIdGetCtrlVersion, (u8*)receivedVersion);
-    return checkForStringWithContent(receivedVersion, lenReturned);
+    return readString(receivedVersion, cmdIdGetCtrlVersion);
 }
 
 bool readInstrumentClass(char* receivedClass)
 {
-    i2c_set_bus_num(SYS_I2C_NUM);
-    u16 lenReturned = readCmd(SYS_I2C_ADR, cmdIDGetInstrumentClass, (u8*)receivedClass);
-    return checkForStringWithContent(receivedClass, lenReturned);
+    return readString(receivedClass, cmdIDGetInstrumentClass);
 }
 
 bool readDisplayType(u8* receivedType)
