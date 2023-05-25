@@ -1,5 +1,5 @@
 #ifndef CONFIG_SPL_BUILD
-#include "zenux_device_detect.h"
+#include "zenux_detect.h"
 #include "zenux_syscontroller.h"
 #include "zenux_mcontroller_io.h"
 #include <common.h>
@@ -31,7 +31,7 @@ struct DeviceInfo
 	enum LcdTypes lcdType;
 } devInfo;
 
-void zenux_device_detect(void)
+void zenux_detect(void)
 {
 	puts("ZENUX device detection started...\n");
 	/* Background:

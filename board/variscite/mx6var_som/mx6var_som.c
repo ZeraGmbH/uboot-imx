@@ -9,7 +9,7 @@
  * SPDX-License-Identifier:	GPL-2.0+
  */
 
-#include "zenux_device_detect.h"
+#include "zenux_detect.h"
 
 #include <common.h>
 #include <fsl_esdhc.h>
@@ -1354,7 +1354,7 @@ int board_late_init(void)
 	else if (is_mx6sdl())
 		env_set("board_rev", "MX6DL");
 #endif
-	zenux_device_detect();
+	zenux_detect();
 
 	return 0;
 }
