@@ -8,7 +8,7 @@ static void assumeInitialCom5003(void);
 static void assumeInitialMt310s2(void);
 static bool logCtrlVersion(void);
 static void deduceSettingsFromSysController(void);
-static void deduceDeviceType(const char* instrumentClass);
+static void deduceIntrumentClass(const char* instrumentClass);
 static void setEnvMachine(void);
 static void setEnvLcd(void);
 
@@ -17,21 +17,12 @@ enum DeviceTypes
 	DEV_COM5003,
 	DEV_MT310S2
 };
-char* envDeviceNames[] = {
-	"com5003",
-	"mt310s2"
-};
 
 enum LcdTypes
 {
 	LCD_COM5003_INITIAL,
 	LCD_COM5003_INITIAL_1280x800_TM101JVHG32,
 	LCD_MT310S2_INITIAL
-};
-char* envLcdDeviceTreeFileNames[] = {
-	"imx6q-var-som-zera-com.dtb",
-	"imx6q-var-som-zera-com.1280x800_Tianma_TM101JVHG32.dtb",
-	"imx6q-var-som-zera-mt.dtb"
 };
 
 struct DeviceInfo
@@ -73,7 +64,7 @@ static void deduceSettingsFromSysController(void)
 	if(readInstrumentClass(instrumentClass) && readDisplayType(displayType)) {
 		printf("Instrument class: %s\n", instrumentClass);
 		printf("Display type: %i\n", displayType);
-		deduceDeviceType(instrumentClass);
+		deduceIntrumentClass(instrumentClass);
 		// TODO - We have no information regarding displays yet
 		devInfo.lcdType = LCD_COM5003_INITIAL;
 	}
@@ -83,8 +74,19 @@ static void deduceSettingsFromSysController(void)
 	}
 }
 
-static void deduceDeviceType(const char* instrumentClass)
+enum InstrumentClasses // called instrument class
 {
+	CLASS_UNKNOWN,
+	CLASS_COM5003,
+	CLASS_MT310S2,
+};
+char* instrumentClassNames[] = {
+	"COM5003",
+	"MT310s2"
+};
+static void deduceIntrumentClass(const char* instrumentClass)
+{
+	enum InstrumentClasses class = CLASS_UNKNOWN;
 	// TODO
 	devInfo.devType = DEV_COM5003;
 }
@@ -116,6 +118,10 @@ static void assumeInitialMt310s2(void)
 
 static void setEnvMachine(void)
 {
+	const char* envDeviceNames[] = {
+		"com5003",
+		"mt310s2"
+	};
 	const char* envVarName = "zera_device";
 	const char* envDeviceName = envDeviceNames[devInfo.devType];
 	printf("Set environment variable '%s' to '%s'\n", envVarName, envDeviceName);
@@ -125,6 +131,11 @@ static void setEnvMachine(void)
 static void setEnvLcd(void)
 {
 	const char* envVarName = "fdt_file";
+	const char* envLcdDeviceTreeFileNames[] = {
+		"imx6q-var-som-zera-com.dtb",
+		"imx6q-var-som-zera-com.1280x800_Tianma_TM101JVHG32.dtb",
+		"imx6q-var-som-zera-mt.dtb"
+	};
 	const char* envLcdDeviceTreeFileName = envLcdDeviceTreeFileNames[devInfo.lcdType];
 	printf("Set environment variable '%s' to '%s'\n", envVarName, envLcdDeviceTreeFileName);
 	env_set(envVarName, envLcdDeviceTreeFileName);
