@@ -1,6 +1,7 @@
 #ifndef CONFIG_SPL_BUILD
 
 #include "zenux_detect_class.h"
+#include <common.h>
 
 enum ClassTypes
 {
@@ -20,7 +21,8 @@ enum ClassTypes classType = CLASS_COM5003;
 
 void deduceClass(const char* instrumentClass)
 {
-	// TODO
+	// TODO - once MT310s2 reports class name
+	setClassCom5003();
 }
 
 void setClassCom5003(void)

@@ -1,6 +1,7 @@
 #ifndef CONFIG_SPL_BUILD
 
 #include "zenux_detect_lcd.h"
+#include <common.h>
 
 enum LcdTypes
 {
@@ -18,8 +19,8 @@ enum LcdTypes lcdType = LCD_COM5003_INITIAL;
 
 void deduceLcd(u8 displayType)
 {
-	// TODO - we have no docs yet
-	setLcdCom5003Initial();
+	// TODO - we have no docs on LCD display type values yet
+	lcdType = LCD_COM5003_1280x800_Tianma_TM101JVHG32;
 }
 
 void setLcdCom5003Initial(void)

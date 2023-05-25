@@ -2,7 +2,6 @@
 #define __ZENUX_DETECT_LCD_H
 
 #include <asm/types.h>
-#include <stdbool.h>
 
 #ifndef CONFIG_SPL_BUILD
 

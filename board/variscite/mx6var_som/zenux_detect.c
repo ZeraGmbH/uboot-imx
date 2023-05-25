@@ -40,12 +40,13 @@ void zenux_detect(void)
 
 static void deduceSettingsFromSysController(void)
 {
-	u8* instrumentClass[MAX_READ_LEN_ZHARD];
+	char instrumentClass[MAX_READ_LEN_ZHARD];
 	u8 displayType;
-	if(readInstrumentClass(instrumentClass) && readDisplayType(displayType)) {
+	if(readInstrumentClass(instrumentClass) && readDisplayType(&displayType)) {
 		printf("Instrument class: %s\n", instrumentClass);
 		printf("Display type: %i\n", displayType);
 		deduceClass(instrumentClass);
+		deduceLcd(displayType);
 	}
 	else {
 		puts("Instrument class an/or display type read failed!\n");
@@ -55,7 +56,7 @@ static void deduceSettingsFromSysController(void)
 
 static bool logCtrlVersion(void)
 {
-	u8* receivedData[MAX_READ_LEN_ZHARD];
+	char receivedData[MAX_READ_LEN_ZHARD];
 	if(readCTRLVersion(receivedData)) {
 		printf("Syscontroller version: %s\n", receivedData);
 		return true;

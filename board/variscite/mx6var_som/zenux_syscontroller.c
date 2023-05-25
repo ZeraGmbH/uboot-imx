@@ -12,8 +12,6 @@ const u16 cmdIdGetCtrlVersion = 0x0003;
 const u16 cmdIDGetInstrumentClass = 0x0020;
 const u16 cmdIdGetDisplayType = 0x0023;
 
-static struct udevice *getI2cDevice();
-
 bool probeSysController(void)
 {
     i2c_set_bus_num(SYS_I2C_NUM);
@@ -50,8 +48,8 @@ bool readInstrumentClass(char* receivedClass)
 bool readDisplayType(u8* receivedType)
 {
     i2c_set_bus_num(SYS_I2C_NUM);
-    char* receivedData[MAX_READ_LEN_ZHARD];
-    u16 lenReturned = readCmd(SYS_I2C_ADR, cmdIdGetDisplayType, (u8*)receivedData);
+    u8 receivedData[MAX_READ_LEN_ZHARD];
+    u16 lenReturned = readCmd(SYS_I2C_ADR, cmdIdGetDisplayType, receivedData);
     if(lenReturned-1 == 1) {
         *receivedType = receivedData[0];
         return true;
