@@ -1,35 +1,16 @@
 #ifndef CONFIG_SPL_BUILD
+
 #include "zenux_detect.h"
+#include "zenux_detect_class.h"
+#include "zenux_detect_lcd.h"
 #include "zenux_syscontroller.h"
 #include "zenux_mcontroller_io.h"
 #include <common.h>
 
+static void deduceSettingsFromSysController(void);
+static bool logCtrlVersion(void);
 static void assumeInitialCom5003(void);
 static void assumeInitialMt310s2(void);
-static bool logCtrlVersion(void);
-static void deduceSettingsFromSysController(void);
-static void deduceIntrumentClass(const char* instrumentClass);
-static void setEnvMachine(void);
-static void setEnvLcd(void);
-
-enum DeviceTypes
-{
-	DEV_COM5003,
-	DEV_MT310S2
-};
-
-enum LcdTypes
-{
-	LCD_COM5003_INITIAL,
-	LCD_COM5003_INITIAL_1280x800_TM101JVHG32,
-	LCD_MT310S2_INITIAL
-};
-
-struct DeviceInfo
-{
-	enum DeviceTypes devType;
-	enum LcdTypes lcdType;
-} devInfo;
 
 void zenux_detect(void)
 {
@@ -53,8 +34,8 @@ void zenux_detect(void)
 		puts("Syscontroller found - deduce more details...\n");
 		deduceSettingsFromSysController();
 	}
-	setEnvMachine();
-	setEnvLcd();
+	setUbootEnvClass();
+	setUbootEnvLcd();
 }
 
 static void deduceSettingsFromSysController(void)
@@ -64,31 +45,12 @@ static void deduceSettingsFromSysController(void)
 	if(readInstrumentClass(instrumentClass) && readDisplayType(displayType)) {
 		printf("Instrument class: %s\n", instrumentClass);
 		printf("Display type: %i\n", displayType);
-		deduceIntrumentClass(instrumentClass);
-		// TODO - We have no information regarding displays yet
-		devInfo.lcdType = LCD_COM5003_INITIAL;
+		deduceClass(instrumentClass);
 	}
 	else {
-		puts("Instrument class read failed!\n");
+		puts("Instrument class an/or display type read failed!\n");
 		assumeInitialMt310s2();
 	}
-}
-
-enum InstrumentClasses // called instrument class
-{
-	CLASS_UNKNOWN,
-	CLASS_COM5003,
-	CLASS_MT310S2,
-};
-char* instrumentClassNames[] = {
-	"COM5003",
-	"MT310s2"
-};
-static void deduceIntrumentClass(const char* instrumentClass)
-{
-	enum InstrumentClasses class = CLASS_UNKNOWN;
-	// TODO
-	devInfo.devType = DEV_COM5003;
 }
 
 static bool logCtrlVersion(void)
@@ -105,40 +67,15 @@ static bool logCtrlVersion(void)
 static void assumeInitialCom5003(void)
 {
 	puts("Assume COM5003 / initial LCD.\n");
-	devInfo.devType = DEV_COM5003;
-	devInfo.lcdType = LCD_COM5003_INITIAL;
+	setClassCom5003();
+	setLcdCom5003Initial();
 }
 
 static void assumeInitialMt310s2(void)
 {
 	puts("Assume MT310s2 / initial LCD.\n");
-	devInfo.devType = DEV_MT310S2;
-	devInfo.lcdType = LCD_MT310S2_INITIAL;
-}
-
-static void setEnvMachine(void)
-{
-	const char* envDeviceNames[] = {
-		"com5003",
-		"mt310s2"
-	};
-	const char* envVarName = "zera_device";
-	const char* envDeviceName = envDeviceNames[devInfo.devType];
-	printf("Set environment variable '%s' to '%s'\n", envVarName, envDeviceName);
-	env_set(envVarName, envDeviceName);
-}
-
-static void setEnvLcd(void)
-{
-	const char* envVarName = "fdt_file";
-	const char* envLcdDeviceTreeFileNames[] = {
-		"imx6q-var-som-zera-com.dtb",
-		"imx6q-var-som-zera-com.1280x800_Tianma_TM101JVHG32.dtb",
-		"imx6q-var-som-zera-mt.dtb"
-	};
-	const char* envLcdDeviceTreeFileName = envLcdDeviceTreeFileNames[devInfo.lcdType];
-	printf("Set environment variable '%s' to '%s'\n", envVarName, envLcdDeviceTreeFileName);
-	env_set(envVarName, envLcdDeviceTreeFileName);
+	setClassMt310s2();
+	setLcdMt310s2Initial();
 }
 
 #endif /* CONFIG_SPL_BUILD */

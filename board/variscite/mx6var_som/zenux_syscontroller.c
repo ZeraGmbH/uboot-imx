@@ -1,4 +1,5 @@
 #ifndef CONFIG_SPL_BUILD
+
 #include "zenux_syscontroller.h"
 #include "zenux_mcontroller_io.h"
 #include <common.h>
