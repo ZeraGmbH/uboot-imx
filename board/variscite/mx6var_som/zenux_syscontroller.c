@@ -28,6 +28,14 @@ bool checkForStringWithContent(char* receivedData, u16 lenReturned)
     return false;
 }
 
+static bool readString(char* stringBuffer, const u16 cmdId)
+{
+    memset (stringBuffer, 0, MAX_READ_LEN_ZHARD);
+    i2c_set_bus_num(SYS_I2C_NUM);
+    u16 lenReturned = readCmd(SYS_I2C_ADR, cmdId, (u8*)stringBuffer);
+    return checkForStringWithContent(stringBuffer, lenReturned);
+}
+
 bool readCTRLVersion(char* receivedVersion)
 {
     i2c_set_bus_num(SYS_I2C_NUM);
