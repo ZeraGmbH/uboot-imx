@@ -5,7 +5,7 @@
 
 #ifndef CONFIG_SPL_BUILD
 
-void deduceLcd(u8 displayType);
+void deduceLcd(u8 displayType, const char* envClassName);
 void setLcdCom5003Initial(void);
 void setLcdMt310s2Initial(void);
 void setUbootEnvLcd(void);

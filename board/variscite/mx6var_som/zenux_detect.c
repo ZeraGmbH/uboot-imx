@@ -46,7 +46,7 @@ static void deduceSettingsFromSysController(void)
 		printf("Instrument class: %s\n", classFromDevice);
 		printf("Display type: %i\n", displayType);
 		const char* envClassName = deduceClass(classFromDevice);
-		deduceLcd(displayType);
+		deduceLcd(displayType, envClassName);
 	}
 	else {
 		puts("Instrument class an/or display type read failed!\n");

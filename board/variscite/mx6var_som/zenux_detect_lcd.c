@@ -17,7 +17,7 @@ const char* envLcdDeviceTreeFileNames[] = {
 
 enum LcdTypes lcdType = LCD_COM5003_INITIAL;
 
-void deduceLcd(u8 displayType)
+void deduceLcd(u8 displayType, const char* envClassName)
 {
 	// TODO - we have no docs on LCD display type values yet
 	lcdType = LCD_COM5003_1280x800_Tianma_TM101JVHG32;
