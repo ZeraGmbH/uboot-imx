@@ -12,17 +12,18 @@ const char* instrumentClassNames[] = {
 	"COM5003",
 	"MT310s2"
 };
-const char* envDeviceNames[] = {
+const char* ubootEnvClassNames[] = {
 	"com5003",
 	"mt310s2"
 };
 
 enum ClassTypes classType = CLASS_COM5003;
 
-void deduceClass(const char* instrumentClass)
+const char* deduceClass(const char* instrumentClass)
 {
 	// TODO - once MT310s2 reports class name
 	setClassCom5003();
+	return ubootEnvClassNames[(int)classType];
 }
 
 void setClassCom5003(void)
@@ -38,7 +39,7 @@ void setClassMt310s2(void)
 void setUbootEnvClass(void)
 {
 	const char* envVarName = "zera_device";
-	const char* envDeviceName = envDeviceNames[(int)classType];
+	const char* envDeviceName = ubootEnvClassNames[(int)classType];
 	printf("Set environment variable '%s' to '%s'\n", envVarName, envDeviceName);
 	env_set(envVarName, envDeviceName);
 }

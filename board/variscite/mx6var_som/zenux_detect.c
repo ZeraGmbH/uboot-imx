@@ -40,12 +40,12 @@ void zenux_detect(void)
 
 static void deduceSettingsFromSysController(void)
 {
-	char instrumentClass[MAX_READ_LEN_ZHARD];
+	char classFromDevice[MAX_READ_LEN_ZHARD];
 	u8 displayType;
-	if(readInstrumentClass(instrumentClass) && readDisplayType(&displayType)) {
-		printf("Instrument class: %s\n", instrumentClass);
+	if(readInstrumentClass(classFromDevice) && readDisplayType(&displayType)) {
+		printf("Instrument class: %s\n", classFromDevice);
 		printf("Display type: %i\n", displayType);
-		deduceClass(instrumentClass);
+		const char* envClassName = deduceClass(classFromDevice);
 		deduceLcd(displayType);
 	}
 	else {

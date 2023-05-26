@@ -3,7 +3,7 @@
 
 #ifndef CONFIG_SPL_BUILD
 
-void deduceClass(const char* instrumentClass);
+const char* deduceClass(const char* instrumentClass);
 void setClassCom5003(void);
 void setClassMt310s2(void);
 void setUbootEnvClass(void);
