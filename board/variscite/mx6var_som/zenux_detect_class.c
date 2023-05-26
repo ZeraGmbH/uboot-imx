@@ -21,8 +21,10 @@ enum ClassTypes classType = CLASS_COM5003;
 
 const char* deduceClass(const char* instrumentClass)
 {
-	// TODO - once MT310s2 reports class name
-	setClassCom5003();
+	if(!strcmp(instrumentClass, "COM5003"))
+		setClassCom5003();
+	else
+		setClassMt310s2();
 	return ubootEnvClassNames[(int)classType];
 }
 
