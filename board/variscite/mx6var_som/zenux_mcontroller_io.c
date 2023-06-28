@@ -8,9 +8,10 @@ static u16 generateCmdRequest(u16 cmdId, u8 subDevice, u8* param, u16 paramLen, 
 
 void readTestCmd(uint i2cAddr, u16 cmdId)
 {
+    u8 requestBuff[16];
     u16 reqLen = generateCmdRequest(cmdId, 0, NULL, 0, requestBuff);
     u8 requestResponse[5];
-    u8 writeTrials;
+    //u8 writeTrials;
 
     if (!i2c_write(i2cAddr, 0, 0, requestBuff, reqLen))
     {
