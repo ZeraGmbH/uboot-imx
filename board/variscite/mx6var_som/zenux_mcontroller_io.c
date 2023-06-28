@@ -12,8 +12,27 @@ u16 readCmd(uint i2cAddr, u16 cmdId, u8 *readBuff)
     u16 bytesRead = 0;
     u16 reqLen = generateCmdRequest(cmdId, 0, NULL, 0, requestBuff);
 
-    if(!i2c_write(i2cAddr, 0, 0, requestBuff, reqLen)) { // cmd -> ctl
-        if(!i2c_read(i2cAddr, 0, -1, requestResponse, 5)) { // <- ctl errmask/len
+    u8 writeTrials = 5;
+
+    puts("Write I2C\n");
+
+    while (writeTrials > 1)
+    {
+        if (i2c_write(i2cAddr, 0, 0, requestBuff, reqLen))
+        {
+            writeTrials--;
+            puts("Retry write I2C!\n");
+        }
+        else
+            writeTrials = 0;
+    }
+
+    //    if(!i2c_write(i2cAddr, 0, 0, requestBuff, reqLen))    // this is probably the 2nd write command
+
+    if (writeTrials == 0)
+    { // cmd -> ctl
+        if(!i2c_read(i2cAddr, 0, -1, requestResponse, 5))
+        { // <- ctl errmask/len
             bytesRead = decodeRequestResponse(requestResponse);
             if(bytesRead > MAX_READ_LEN_ZHARD) {
                 printf("Cannot not read more than %i bytes!\n", MAX_READ_LEN_ZHARD);
