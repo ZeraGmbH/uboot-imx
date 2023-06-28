@@ -5,32 +5,39 @@
 static u16 decodeRequestResponse(u8 *response);
 static u16 generateCmdRequest(u16 cmdId, u8 subDevice, u8* param, u16 paramLen, u8 *buffToSend);
 
+
+void readTestCmd(uint i2cAddr, u16 cmdId)
+{
+    u16 reqLen = generateCmdRequest(cmdId, 0, NULL, 0, requestBuff);
+    u8 requestResponse[5];
+    u8 writeTrials;
+
+    if (!i2c_write(i2cAddr, 0, 0, requestBuff, reqLen))
+    {
+        puts("ERROR Test I2C-Write-1!\n");
+    }
+    else
+    {
+        puts("I2C-Write-1 OK!\n");
+        if(!i2c_read(i2cAddr, 0, -1, requestResponse, 5))
+        {
+            puts("ERROR Test I2C-READ-1!\n");
+        }
+        else
+        {
+            puts("Test I2C-READ-1 OK!\n");
+        }
+    }
+}
+
+
+
 u16 readCmd(uint i2cAddr, u16 cmdId, u8 *readBuff)
 {
     u8 requestBuff[16];
     u8 requestResponse[5];
     u16 bytesRead = 0;
     u16 reqLen = generateCmdRequest(cmdId, 0, NULL, 0, requestBuff);
-
-    #define I2C_TRAILS 10
-    u8 writeTrials;
-
-    for (writeTrials=0; writeTrials<I2C_TRAILS; writeTrials++)
-    {
-        if (!i2c_write(i2cAddr, 0, 0, requestBuff, reqLen))
-        {
-            puts("ERROR I2C-Write!\n");
-        }
-        else
-        {
-            puts("I2C-Write OK\n");
-            if(!i2c_read(i2cAddr, 0, -1, requestResponse, 5))
-                puts("ERROR I2C-Read!\n");
-            else
-                puts("I2C-Read OK\n");
-        }
-    }
-
 
     if (!i2c_write(i2cAddr, 0, 0, requestBuff, reqLen))  { // cmd -> ctl
         if(!i2c_read(i2cAddr, 0, -1, requestResponse, 5))   { // <- ctl errmask/len

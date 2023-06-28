@@ -18,6 +18,13 @@ bool probeSysController(void)
     return 0 == i2c_probe(SYS_I2C_ADR);
 }
 
+void readI2cLoop(void)      // remove after I2C tests
+{
+    i2c_set_bus_num(SYS_I2C_NUM);
+    readTestCmd(SYS_I2C_ADR, cmdIdGetCtrlVersion);
+}
+
+
 bool checkForStringWithContent(char* receivedData, u16 lenReturned)
 {
     if(lenReturned > 1) {

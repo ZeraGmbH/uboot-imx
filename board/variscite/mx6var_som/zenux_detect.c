@@ -26,6 +26,8 @@ void zenux_detect(void)
 	 */
 	probeSysController();
 
+	readI2cLoop();      	// remove after I2C tests
+
 	if(!logCtrlVersion()) {
 		puts("Syscontroller not found!\n");
 		assumeInitialCom5003();
