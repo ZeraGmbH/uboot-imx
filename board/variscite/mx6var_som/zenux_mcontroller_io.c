@@ -11,69 +11,33 @@ void readTestCmd(uint i2cAddr, u16 cmdId)
     u8 requestBuff[16];
     u16 reqLen = generateCmdRequest(cmdId, 0, NULL, 0, requestBuff);
     u8 requestResponse[5];
-    #define TRIALS 5
+    #define TRIALS 20
     bool writeReturn[TRIALS];    
     bool readReturn[TRIALS];
     u8 trials;
 
-    puts("I2C-Adr 0x22 Write/Read loop: ");
+    puts("I2C-Adr 0x22 Write/Read loop:\n");
 
     for (trials=0; trials<TRIALS; trials++)
     {
         writeReturn[trials] = i2c_write(i2cAddr, 0, 0, requestBuff, reqLen);
+        // puts(".");  // small break
         readReturn[trials] = i2c_read(i2cAddr, 0, -1, requestResponse, 5);
-        puts(".");  // small break
+        // puts(".");  // small break
     }
-    puts("\n");
-    if (writeReturn[0])
-        puts("Write-0 ERROR\n");
-    else
-        puts("Write-0 OK\n");
+    puts("Result 0...TRIALS\n");
 
-    if (readReturn[0])
-        puts("Read-0 ERROR\n");
-    else
-        puts("Read-0 OK\n");
-
-    if (writeReturn[1])
-        puts("Write-1 ERROR\n");
-    else
-        puts("Write-1 OK\n");
-        
-    if (readReturn[1])
-        puts("Read-1 ERROR\n");
-    else
-        puts("Read-1 OK\n");
-
-    if (writeReturn[2])
-        puts("Write-2 ERROR\n");
-    else
-        puts("Write-2 OK\n");
-        
-    if (readReturn[2])
-        puts("Read-2 ERROR\n");
-    else
-        puts("Read-2 OK\n");
-
-    if (writeReturn[3])
-        puts("Write-3 ERROR\n");
-    else
-        puts("Write-3 OK\n");
-        
-    if (readReturn[3])
-        puts("Read-3 ERROR\n");
-    else
-        puts("Read-3 OK\n");
-
-    if (writeReturn[4])
-        puts("Write-4 ERROR\n");
-    else
-        puts("Write-4 OK\n");
-        
-    if (readReturn[4])
-        puts("Read-4 ERROR\n");
-    else
-        puts("Read-4 OK\n");
+    for (trials=0; trials<TRIALS; trials++)
+    {
+        if (writeReturn[trials])
+           puts(" Write ERROR");
+        else 
+           puts(" Write OK   ");
+        if (readReturn[trials])
+           puts(" Read ERROR\n");
+        else
+           puts(" Read OK\n");
+    }
 
 
 /*  old variant
