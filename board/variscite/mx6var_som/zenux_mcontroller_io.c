@@ -10,7 +10,7 @@ void readTestCmd(uint i2cAddr, u16 cmdId)
 {
     u8 requestBuff[16];
     u16 reqLen = generateCmdRequest(cmdId, 0, NULL, 0, requestBuff);
-    u8 requestResponse[5]x;
+    u8 requestResponse[5];
     //u8 writeTrials;
 
     puts("I2C-Adr 0x22 Write/Read loop:\n");
