@@ -21,9 +21,9 @@ void readTestCmd(uint i2cAddr, u16 cmdId)
     for (trials=0; trials<TRIALS; trials++)
     {
         writeReturn[trials] = i2c_write(i2cAddr, 0, 0, requestBuff, reqLen);
-        // puts(".");  // small break
+        puts("wr..");  // small break
         readReturn[trials] = i2c_read(i2cAddr, 0, -1, requestResponse, 5);
-        // puts(".");  // small break
+        puts("rd\n");  // small break
     }
     puts("Result 0...TRIALS\n");
 
