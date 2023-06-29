@@ -72,6 +72,7 @@ u16 readCmd(uint i2cAddr, u16 cmdId, u8 *readBuff)
     u16 reqLen = generateCmdRequest(cmdId, 0, NULL, 0, requestBuff);
 
     if (!i2c_write(i2cAddr, 0, 0, requestBuff, reqLen))  { // cmd -> ctl
+        puts("wait..");  // small break, could be the final workaround
         if(!i2c_read(i2cAddr, 0, -1, requestResponse, 5))   { // <- ctl errmask/len
             bytesRead = decodeRequestResponse(requestResponse);
             if(bytesRead > MAX_READ_LEN_ZHARD) {
