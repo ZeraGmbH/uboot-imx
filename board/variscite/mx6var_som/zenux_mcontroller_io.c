@@ -13,93 +13,94 @@ void readTestCmd(uint i2cAddr, u16 cmdId)
     u8 requestResponse[5];
     //u8 writeTrials;
 
+    puts("I2C-Adr 0x22 Write/Read loop:\n");
+
     if (i2c_write(i2cAddr, 0, 0, requestBuff, reqLen))
     {
-        puts("ERROR Test I2C-Write-1!\n");
+        puts("Write-1 ERROR!\n");
     }
     else
     {
-        puts("I2C-Write-1 OK!\n");
+        puts("Write-1 OK! -> ");
         if(i2c_read(i2cAddr, 0, -1, requestResponse, 5))
         {
-            puts("ERROR Test I2C-READ-1!\n");
+            puts("READ-1 ERROR!\n");
         }
         else
         {
-            puts("Test I2C-READ-1 OK!\n");
+            puts("READ-1 OK!\n");
         }
     }
 
     if (i2c_write(i2cAddr, 0, 0, requestBuff, reqLen))
     {
-        puts("ERROR Test I2C-Write-2!\n");
+        puts("Write-2 ERROR!\n");
     }
     else
     {
-        puts("I2C-Write-2 OK!\n");
+        puts("Write-2 OK! -> ");
         if(i2c_read(i2cAddr, 0, -1, requestResponse, 5))
         {
-            puts("ERROR Test I2C-READ-2!\n");
+            puts("READ-2 ERROR!\n");
         }
         else
         {
-            puts("Test I2C-READ-2 OK!\n");
+            puts("READ-2 OK!\n");
         }
     }
 
     if (i2c_write(i2cAddr, 0, 0, requestBuff, reqLen))
     {
-        puts("ERROR Test I2C-Write-3!\n");
+        puts("Write-3 ERROR!\n");
     }
     else
     {
-        puts("I2C-Write-3 OK!\n");
+        puts("Write-3 OK! -> ");
         if(i2c_read(i2cAddr, 0, -1, requestResponse, 5))
         {
-            puts("ERROR Test I2C-READ-3!\n");
+            puts("READ-3 ERROR!\n");
         }
         else
         {
-            puts("Test I2C-READ-3 OK!\n");
+            puts("READ-3 OK!\n");
         }
     }
 
     if (i2c_write(i2cAddr, 0, 0, requestBuff, reqLen))
     {
-        puts("ERROR Test I2C-Write-4!\n");
+        puts("Write-4 ERROR!\n");
     }
     else
     {
-        puts("I2C-Write-4 OK!\n");
+        puts("Write-4 OK! -> ");
         if(i2c_read(i2cAddr, 0, -1, requestResponse, 5))
         {
-            puts("ERROR Test I2C-READ-4!\n");
+            puts("READ-4 ERROR!\n");
         }
         else
         {
-            puts("Test I2C-READ-4 OK!\n");
+            puts("READ-4 OK!\n");
         }
     }
 
     if (i2c_write(i2cAddr, 0, 0, requestBuff, reqLen))
     {
-        puts("ERROR Test I2C-Write-5!\n");
+        puts("Write-5 ERROR!\n");
     }
     else
     {
-        puts("I2C-Write-5 OK!\n");
+        puts("Write-5 OK! -> ");
         if(i2c_read(i2cAddr, 0, -1, requestResponse, 5))
         {
-            puts("ERROR Test I2C-READ-5!\n");
+            puts("READ-5 ERROR!\n");
         }
         else
         {
-            puts("Test I2C-READ-5 OK!\n");
+            puts("READ-5 OK!\n");
         }
     }
-
+    puts("... end loop:\n");
 }
-
 
 
 u16 readCmd(uint i2cAddr, u16 cmdId, u8 *readBuff)
