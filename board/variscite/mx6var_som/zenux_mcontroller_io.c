@@ -29,6 +29,75 @@ void readTestCmd(uint i2cAddr, u16 cmdId)
             puts("Test I2C-READ-1 OK!\n");
         }
     }
+
+    if (i2c_write(i2cAddr, 0, 0, requestBuff, reqLen))
+    {
+        puts("ERROR Test I2C-Write-2!\n");
+    }
+    else
+    {
+        puts("I2C-Write-2 OK!\n");
+        if(i2c_read(i2cAddr, 0, -1, requestResponse, 5))
+        {
+            puts("ERROR Test I2C-READ-2!\n");
+        }
+        else
+        {
+            puts("Test I2C-READ-2 OK!\n");
+        }
+    }
+
+    if (i2c_write(i2cAddr, 0, 0, requestBuff, reqLen))
+    {
+        puts("ERROR Test I2C-Write-3!\n");
+    }
+    else
+    {
+        puts("I2C-Write-3 OK!\n");
+        if(i2c_read(i2cAddr, 0, -1, requestResponse, 5))
+        {
+            puts("ERROR Test I2C-READ-3!\n");
+        }
+        else
+        {
+            puts("Test I2C-READ-3 OK!\n");
+        }
+    }
+
+    if (i2c_write(i2cAddr, 0, 0, requestBuff, reqLen))
+    {
+        puts("ERROR Test I2C-Write-4!\n");
+    }
+    else
+    {
+        puts("I2C-Write-4 OK!\n");
+        if(i2c_read(i2cAddr, 0, -1, requestResponse, 5))
+        {
+            puts("ERROR Test I2C-READ-4!\n");
+        }
+        else
+        {
+            puts("Test I2C-READ-4 OK!\n");
+        }
+    }
+
+    if (i2c_write(i2cAddr, 0, 0, requestBuff, reqLen))
+    {
+        puts("ERROR Test I2C-Write-5!\n");
+    }
+    else
+    {
+        puts("I2C-Write-5 OK!\n");
+        if(i2c_read(i2cAddr, 0, -1, requestResponse, 5))
+        {
+            puts("ERROR Test I2C-READ-5!\n");
+        }
+        else
+        {
+            puts("Test I2C-READ-5 OK!\n");
+        }
+    }
+
 }
 
 
