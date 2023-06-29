@@ -13,14 +13,14 @@ void readTestCmd(uint i2cAddr, u16 cmdId)
     u8 requestResponse[5];
     //u8 writeTrials;
 
-    if (!i2c_write(i2cAddr, 0, 0, requestBuff, reqLen))
+    if (i2c_write(i2cAddr, 0, 0, requestBuff, reqLen))
     {
         puts("ERROR Test I2C-Write-1!\n");
     }
     else
     {
         puts("I2C-Write-1 OK!\n");
-        if(!i2c_read(i2cAddr, 0, -1, requestResponse, 5))
+        if(i2c_read(i2cAddr, 0, -1, requestResponse, 5))
         {
             puts("ERROR Test I2C-READ-1!\n");
         }
