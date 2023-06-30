@@ -14,8 +14,11 @@ const u16 cmdIdGetDisplayType = 0x0023;
 
 bool probeSysController(void)
 {
+    int ret;
     i2c_set_bus_num(SYS_I2C_NUM);
-    return 0 == i2c_probe(SYS_I2C_ADR);
+    ret = i2c_probe(SYS_I2C_ADR);
+    udelay(50);   // avoid sporadic NACK from uC
+    return 0 == ret;
 }
 
 bool checkForStringWithContent(char* receivedData, u16 lenReturned)
