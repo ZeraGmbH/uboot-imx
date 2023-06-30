@@ -12,9 +12,9 @@ u16 readCmd(uint i2cAddr, u16 cmdId, u8 *readBuff)
     u16 bytesRead = 0;
     u16 reqLen = generateCmdRequest(cmdId, 0, NULL, 0, requestBuff);
 
-    if (!i2c_write(i2cAddr, 0, 0, requestBuff, reqLen))  { // cmd -> ctl
+    if (!i2c_write(i2cAddr, 0, 0, requestBuff, reqLen)) { // cmd -> ctl
         udelay(50);   // could be the final workaround for LCD-detection
-        if(!i2c_read(i2cAddr, 0, -1, requestResponse, 5))   { // <- ctl errmask/len
+        if(!i2c_read(i2cAddr, 0, -1, requestResponse, 5)) { // <- ctl errmask/len
             bytesRead = decodeRequestResponse(requestResponse);
             if(bytesRead > MAX_READ_LEN_ZHARD) {
                 printf("Cannot not read more than %i bytes!\n", MAX_READ_LEN_ZHARD);

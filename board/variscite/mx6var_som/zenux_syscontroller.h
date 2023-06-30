@@ -7,7 +7,6 @@
 #ifndef CONFIG_SPL_BUILD
 
 bool probeSysController(void);
-void readI2cLoop(void);      // remove after I2C tests
 bool readCTRLVersion(char* receivedVersion);
 bool readInstrumentClass(char* receivedClass);
 bool readDisplayType(u8* receivedType);
