@@ -20,8 +20,9 @@ bool probeSysController(void)
 
 void readI2cLoop(void)      // remove after I2C tests
 {
-    i2c_set_bus_num(SYS_I2C_NUM);
-    readTestCmd(SYS_I2C_ADR, cmdIdGetCtrlVersion);
+    puts("readI2cLoop:no action");
+    //i2c_set_bus_num(SYS_I2C_NUM);
+    //readTestCmd(SYS_I2C_ADR, cmdIdGetCtrlVersion);
 }
 
 
