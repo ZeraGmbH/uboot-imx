@@ -5,43 +5,6 @@
 static u16 decodeRequestResponse(u8 *response);
 static u16 generateCmdRequest(u16 cmdId, u8 subDevice, u8* param, u16 paramLen, u8 *buffToSend);
 
-
-void readTestCmd(uint i2cAddr, u16 cmdId)
-{
-    u8 requestBuff[16];
-    u16 reqLen = generateCmdRequest(cmdId, 0, NULL, 0, requestBuff);
-    u8 requestResponse[5];
-    #define TRIALS 20
-    bool writeReturn[TRIALS];    
-    bool readReturn[TRIALS];
-    u8 trials;
-
-    puts("I2C-Adr 0x22 Write/Read loop:\n");
-
-    for (trials=0; trials<TRIALS; trials++)
-    {
-        writeReturn[trials] = i2c_write(i2cAddr, 0, 0, requestBuff, reqLen);
-        puts("wr..");  // small break
-        readReturn[trials] = i2c_read(i2cAddr, 0, -1, requestResponse, 5);
-        puts("rd\n");  // small break
-    }
-    puts("Result 0...TRIALS\n");
-
-    for (trials=0; trials<TRIALS; trials++)
-    {
-        if (writeReturn[trials])
-           puts(" Write ERROR");
-        else 
-           puts(" Write OK   ");
-        if (readReturn[trials])
-           puts(" Read ERROR\n");
-        else
-           puts(" Read OK\n");
-    }
-    puts("Loop end\n");
-}
-
-
 u16 readCmd(uint i2cAddr, u16 cmdId, u8 *readBuff)
 {
     u8 requestBuff[16];
