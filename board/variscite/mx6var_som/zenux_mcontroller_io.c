@@ -38,28 +38,6 @@ void readTestCmd(uint i2cAddr, u16 cmdId)
         else
            puts(" Read OK\n");
     }
-
-
-/*  old variant
-
-    if (i2c_write(i2cAddr, 0, 0, requestBuff, reqLen))
-    {
-        puts("Write-2 ERROR!\n");
-    }
-    else
-    {
-        puts("Write-2 OK! -> ");
-        if(i2c_read(i2cAddr, 0, -1, requestResponse, 5))
-        {
-            puts("READ-2 ERROR!\n");
-        }
-        else
-        {
-            puts("READ-2 OK!\n");
-        }
-    }
-*/
-
     puts("Loop end\n");
 }
 
@@ -72,7 +50,8 @@ u16 readCmd(uint i2cAddr, u16 cmdId, u8 *readBuff)
     u16 reqLen = generateCmdRequest(cmdId, 0, NULL, 0, requestBuff);
 
     if (!i2c_write(i2cAddr, 0, 0, requestBuff, reqLen))  { // cmd -> ctl
-        puts("wait..");  // small break, could be the final workaround
+        udelay(250);
+        //puts("wait..");       // short break, could be the final workaround for LCD-topic
         if(!i2c_read(i2cAddr, 0, -1, requestResponse, 5))   { // <- ctl errmask/len
             bytesRead = decodeRequestResponse(requestResponse);
             if(bytesRead > MAX_READ_LEN_ZHARD) {
