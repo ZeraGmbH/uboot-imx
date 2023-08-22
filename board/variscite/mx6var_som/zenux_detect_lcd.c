@@ -5,22 +5,28 @@
 
 enum LcdTypes
 {
+	LCD_UNKNOWN,
 	LCD_COM5003_INITIAL,
-	LCD_COM5003_1280x800_Tianma_TM101JVHG32,
 	LCD_MT310S2_INITIAL,
+	LCD_COM5003_1280x800_Tianma_TM101JVHG32,
+	TOTAL_LCD_TYPES
 };
+
 const char* envLcdDeviceTreeFileNames[] = {
+	"imx6q-var-som-zera-mt.dtb",
 	"imx6q-var-som-zera-com.dtb",
+	"imx6q-var-som-zera-mt.dtb",
 	"imx6q-var-som-zera-com.1280x800_Tianma_TM101JVHG32.dtb",
-	"imx6q-var-som-zera-mt.dtb"
 };
 
 enum LcdTypes lcdType = LCD_COM5003_INITIAL;
 
 void deduceLcd(u8 displayType, const char* envClassName)
 {
-	// TODO - we have no docs on LCD display type values yet
-	lcdType = LCD_COM5003_1280x800_Tianma_TM101JVHG32;
+	if ((displayType >= LCD_UNKNOWN) && (displayType < TOTAL_LCD_TYPES))
+		lcdType = displayType;
+	else
+		lcdType = LCD_COM5003_1280x800_Tianma_TM101JVHG32;
 }
 
 void setLcdCom5003Initial(void)
