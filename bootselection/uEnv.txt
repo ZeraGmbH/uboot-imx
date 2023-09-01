@@ -1,2 +1,2 @@
-rescuerequested=0
-updateinprogress=1
+rescuerequested=1
+updateinprogress=0
