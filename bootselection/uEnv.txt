@@ -1,0 +1,2 @@
+rescuerequested=0
+updateinprogress=1
