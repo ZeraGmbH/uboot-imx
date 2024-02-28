@@ -6,6 +6,13 @@
 static bool decodeRequestResponse(u8 *response, u16* responseLen);
 static u16 generateCmdRequest(u16 cmdId, u8 subDevice, u8* param, u16 paramLen, u8 *buffToSend);
 
+static void i2cInterCommandDelay(void)
+{
+    // Systemcontroller might be very busy right after boot controlling
+    // voltages/temperatures/fans...
+    udelay(50);
+}
+
 u16 readCmd(uint i2cAddr, u16 cmdId, u8 *readBuff)
 {
     u8 requestBuff[16];
@@ -14,7 +21,7 @@ u16 readCmd(uint i2cAddr, u16 cmdId, u8 *readBuff)
     u16 reqLen = generateCmdRequest(cmdId, 0, NULL, 0, requestBuff);
 
     if(!i2c_write(i2cAddr, 0, 0, requestBuff, reqLen)) { // cmd -> ctl
-        udelay(50);   // could be the final workaround for LCD-detection
+        i2cInterCommandDelay();
         if(!i2c_read(i2cAddr, 0, -1, requestResponse, 5)) { // <- ctl errmask/len
             if(decodeRequestResponse(requestResponse, &bytesRead)) {
                 if(bytesRead > MAX_READ_LEN_ZHARD) {
@@ -26,7 +33,7 @@ u16 readCmd(uint i2cAddr, u16 cmdId, u8 *readBuff)
                     bytesRead = 0;
                 }
                 else {
-                    udelay(50); // for secure I2C communication (s.o.)
+                    i2cInterCommandDelay();
                     if(!i2c_read(i2cAddr, 0, -1, readBuff, bytesRead)) { // <- ctl data
                         // TODO checksum & their error handling
                     }
@@ -54,7 +61,7 @@ bool writeCmd(uint i2cAddr, u16 cmdId, u8 *cmdParam, u8 paramLen)
     u16 reqLen = generateCmdRequest(cmdId, 0, cmdParam, paramLen, requestBuff);
 
     if(!i2c_write(i2cAddr, 0, 0, requestBuff, reqLen)) { // cmd+param -> ctl
-        udelay(50);
+        i2cInterCommandDelay();
         if(!i2c_read(i2cAddr, 0, -1, requestResponse, 5)) { // <- ctl errmask/len
             if(decodeRequestResponse(requestResponse, &bytesRead)) {
                 if(bytesRead != 0)
