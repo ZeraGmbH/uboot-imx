@@ -1359,8 +1359,6 @@ int board_late_init(void)
 	puts("Start LCD watchdog on systemcontroller... ");
 	if(enableLcdStartWatchdog())
 		puts("OK\n");
-	else
-		puts("Error\n");
 	return 0;
 }
 

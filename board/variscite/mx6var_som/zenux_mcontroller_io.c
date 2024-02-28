@@ -1,8 +1,9 @@
 #ifndef CONFIG_SPL_BUILD
 #include "zenux_mcontroller_io.h"
 #include "zenux_mcontroller_crc.h"
+#include <stdbool.h>
 
-static u16 decodeRequestResponse(u8 *response);
+static bool decodeRequestResponse(u8 *response, u16* responseLen);
 static u16 generateCmdRequest(u16 cmdId, u8 subDevice, u8* param, u16 paramLen, u8 *buffToSend);
 
 u16 readCmd(uint i2cAddr, u16 cmdId, u8 *readBuff)
@@ -15,23 +16,24 @@ u16 readCmd(uint i2cAddr, u16 cmdId, u8 *readBuff)
     if(!i2c_write(i2cAddr, 0, 0, requestBuff, reqLen)) { // cmd -> ctl
         udelay(50);   // could be the final workaround for LCD-detection
         if(!i2c_read(i2cAddr, 0, -1, requestResponse, 5)) { // <- ctl errmask/len
-            bytesRead = decodeRequestResponse(requestResponse);
-            if(bytesRead > MAX_READ_LEN_ZHARD) {
-                printf("readCmd: Cannot not read more than %i bytes!\n", MAX_READ_LEN_ZHARD);
-                bytesRead = 0;
-            }
-            if(bytesRead <= 1) { // just checksum is not enough
-                printf("readCmd: Invalid response - is comannd ID %04X correct?\n", cmdId);
-                bytesRead = 0;
-            }
-            else {
-                udelay(50); // for secure I2C communication (s.o.)
-                if(!i2c_read(i2cAddr, 0, -1, readBuff, bytesRead)) { // <- ctl data
-                    // TODO checksum & their error handling
+            if(decodeRequestResponse(requestResponse, &bytesRead)) {
+                if(bytesRead > MAX_READ_LEN_ZHARD) {
+                    printf("readCmd: Cannot not read more than %i bytes!\n", MAX_READ_LEN_ZHARD);
+                    bytesRead = 0;
+                }
+                if(bytesRead <= 1) { // just checksum is not enough
+                    printf("readCmd: Invalid response - is comannd ID %04X correct?\n", cmdId);
+                    bytesRead = 0;
                 }
                 else {
-                    puts("Could not read data from I2c!\n");
-                    bytesRead = 0;
+                    udelay(50); // for secure I2C communication (s.o.)
+                    if(!i2c_read(i2cAddr, 0, -1, readBuff, bytesRead)) { // <- ctl data
+                        // TODO checksum & their error handling
+                    }
+                    else {
+                        puts("Could not read data from I2c!\n");
+                        bytesRead = 0;
+                    }
                 }
             }
         }
@@ -54,11 +56,12 @@ bool writeCmd(uint i2cAddr, u16 cmdId, u8 *cmdParam, u8 paramLen)
     if(!i2c_write(i2cAddr, 0, 0, requestBuff, reqLen)) { // cmd+param -> ctl
         udelay(50);
         if(!i2c_read(i2cAddr, 0, -1, requestResponse, 5)) { // <- ctl errmask/len
-            bytesRead = decodeRequestResponse(requestResponse);
-            if(bytesRead != 0)
-                printf("writeCmd: Do not expect to read %i bytes!\n", bytesRead);
-            else
-                allOk = true;
+            if(decodeRequestResponse(requestResponse, &bytesRead)) {
+                if(bytesRead != 0)
+                    printf("writeCmd: Do not expect to read %i bytes!\n", bytesRead);
+                else
+                    allOk = true;
+            }
         }
         else
             puts("Could not read error mask/length from I2c!\n");
@@ -69,16 +72,16 @@ bool writeCmd(uint i2cAddr, u16 cmdId, u8 *cmdParam, u8 paramLen)
 
 }
 
-static u16 decodeRequestResponse(u8 *response)
+static bool decodeRequestResponse(u8 *response, u16* responseLen)
 {
-    u16 len = 0;
+    *responseLen = 0;
     if(response[0] == 0 && response[1] == 0) {
-        len = response[2] * 256 + response[3];
+        *responseLen = response[2] * 256 + response[3];
         // TODO checksum & their error handling
+        return true;
     }
-    else
-        printf("I2c request returned error mask %02X%02X!\n", response[0], response[1]);
-    return len;
+    printf("I2c request returned error mask %02X%02X!\n", response[0], response[1]);
+    return false;
 }
 
 static u16 generateCmdRequest(u16 cmdId, u8 subDevice, u8* param, u16 paramLen, u8 *buffToSend)
