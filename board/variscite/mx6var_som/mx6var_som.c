@@ -10,6 +10,7 @@
  */
 
 #include "zenux_detect.h"
+#include "zenux_syscontroller.h"
 
 #include <common.h>
 #include <fsl_esdhc.h>
@@ -1355,7 +1356,11 @@ int board_late_init(void)
 		env_set("board_rev", "MX6DL");
 #endif
 	zenux_detect();
-
+	puts("Start LCD watchdog on systemcontroller... ");
+	if(enableLcdStartWatchdog())
+		puts("OK\n");
+	else
+		puts("Error\n");
 	return 0;
 }
 
