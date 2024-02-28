@@ -10,6 +10,7 @@ bool probeSysController(void);
 bool readCTRLVersion(char* receivedVersion);
 bool readInstrumentClass(char* receivedClass);
 bool readDisplayType(u8* receivedType);
+bool enableLcdStartWatchdog(void);
 
 #endif /* CONFIG_SPL_BUILD */
 

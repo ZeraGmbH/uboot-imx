@@ -11,6 +11,7 @@
 const u16 cmdIdGetCtrlVersion = 0x0003;
 const u16 cmdIDGetInstrumentClass = 0x0020;
 const u16 cmdIdGetDisplayType = 0x0023;
+const u16 cmdIdLcdStartWatchdog = 0x0043;
 
 bool probeSysController(void)
 {
@@ -58,6 +59,13 @@ bool readDisplayType(u8* receivedType)
         return true;
     }
     return false;
+}
+
+bool enableLcdStartWatchdog(void)
+{
+    i2c_set_bus_num(SYS_I2C_NUM);
+    u8 paramData = 1;
+    return writeCmd(SYS_I2C_ADR, cmdIdLcdStartWatchdog, &paramData, 1);
 }
 
 #endif
