@@ -43,6 +43,32 @@ u16 readCmd(uint i2cAddr, u16 cmdId, u8 *readBuff)
     return bytesRead;
 }
 
+bool writeCmd(uint i2cAddr, u16 cmdId, u8 *cmdParam, u8 paramLen)
+{
+    u8 requestBuff[512];
+    u8 requestResponse[5];
+    u16 bytesRead = 0;
+    bool allOk = false;
+    u16 reqLen = generateCmdRequest(cmdId, 0, cmdParam, paramLen, requestBuff);
+
+    if(!i2c_write(i2cAddr, 0, 0, requestBuff, reqLen)) { // cmd+param -> ctl
+        udelay(50);
+        if(!i2c_read(i2cAddr, 0, -1, requestResponse, 5)) { // <- ctl errmask/len
+            bytesRead = decodeRequestResponse(requestResponse);
+            if(bytesRead != 0)
+                printf("writeCmd: Do not expect to read %i bytes!\n", bytesRead);
+            else
+                allOk = true;
+        }
+        else
+            puts("Could not read error mask/length from I2c!\n");
+    }
+    else
+        puts("Could not write to I2c!\n");
+    return allOk;
+
+}
+
 static u16 decodeRequestResponse(u8 *response)
 {
     u16 len = 0;
