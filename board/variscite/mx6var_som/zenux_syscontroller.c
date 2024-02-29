@@ -61,14 +61,14 @@ bool readDisplayType(u8* receivedType)
     return false;
 }
 
-bool enableLcdStartWatchdog(void)
+bool enableLcdWatchdog(void)
 {
     i2c_set_bus_num(SYS_I2C_NUM);
     u8 paramData = 1;
     return writeCmd(SYS_I2C_ADR, cmdIdLcdStartWatchdog, &paramData, 1);
 }
 
-bool disableLcdStartWatchdog(void)
+bool disableLcdWatchdog(void)
 {
     i2c_set_bus_num(SYS_I2C_NUM);
     u8 paramData = 0;
