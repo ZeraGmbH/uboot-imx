@@ -68,4 +68,11 @@ bool enableLcdStartWatchdog(void)
     return writeCmd(SYS_I2C_ADR, cmdIdLcdStartWatchdog, &paramData, 1);
 }
 
+bool disableLcdStartWatchdog(void)
+{
+    i2c_set_bus_num(SYS_I2C_NUM);
+    u8 paramData = 0;
+    return writeCmd(SYS_I2C_ADR, cmdIdLcdStartWatchdog, &paramData, 1);
+}
+
 #endif
