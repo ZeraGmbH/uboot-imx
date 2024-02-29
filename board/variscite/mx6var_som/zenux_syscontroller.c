@@ -75,4 +75,26 @@ bool disableLcdWatchdog(void)
     return writeCmd(SYS_I2C_ADR, cmdIdLcdStartWatchdog, &paramData, 1);
 }
 
+static int do_enableLcdWatchdog(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
+{
+    return enableLcdWatchdog() ? CMD_RET_SUCCESS : CMD_RET_FAILURE;
+}
+
+U_BOOT_CMD(
+	enableLcdWatchdog, 1, 1, do_enableLcdWatchdog,
+	"enable LCD watchdog",
+	"- systemcontroller LCD watchdog on"
+);
+
+static int do_disableLcdWatchdog(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
+{
+    return disableLcdWatchdog() ? CMD_RET_SUCCESS : CMD_RET_FAILURE;
+}
+
+U_BOOT_CMD(
+	disableLcdWatchdog, 1, 1, do_disableLcdWatchdog,
+	"disable LCD watchdog",
+	"- systemcontroller LCD watchdog off"
+);
+
 #endif
