@@ -1355,10 +1355,12 @@ int board_late_init(void)
 	else if (is_mx6sdl())
 		env_set("board_rev", "MX6DL");
 #endif
+	puts("\n");
 	zenux_detect();
 	puts("Start LCD watchdog on systemcontroller... ");
 	if(enableLcdWatchdog())
 		puts("OK\n");
+	puts("\n");
 	return 0;
 }
 
