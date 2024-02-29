@@ -1357,8 +1357,8 @@ int board_late_init(void)
 #endif
 	puts("\n");
 	zenux_detect();
-	puts("Start LCD watchdog on systemcontroller... ");
-	if(enableLcdWatchdog())
+	puts("Stop LCD watchdog on systemcontroller... ");
+	if(disableLcdWatchdog())
 		puts("OK\n");
 	puts("\n");
 	return 0;
