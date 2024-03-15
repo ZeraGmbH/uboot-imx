@@ -13,6 +13,17 @@ const u16 cmdIDGetInstrumentClass = 0x0020;
 const u16 cmdIdGetDisplayType = 0x0023;
 const u16 cmdIdLcdStartWatchdog = 0x0043;
 
+/* Background:
+   Systemcontroller is always on and switches off I2C pull up voltage in
+   power off state. On power on the systemcontroller switches on I2C pull
+   up voltage. At the time of writing this can cause systemcontroller's I2C
+   unit to NAK first communication request. Future versions of
+   systemcontroller will fix this by enabling I2C once pullup voltage is on.
+   So maybe then we can remove probing but it can remain - there is no harm
+   expected.
+   Update: Systemcontroller was fixed: I2c unit is off while system powerered
+   off.
+ */
 bool probeSysController(void)
 {
     int ret;

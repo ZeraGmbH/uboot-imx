@@ -16,15 +16,6 @@ void zenux_detect(void)
 {
 	puts("U-boot - lcd enums matching with system-controller!\n");
 	puts("ZENUX device detection started...\n");
-	/* Background:
-	   Systemcontroller is always on and switches off I2C pull up voltage in
-	   power off state. On power on the systemcontroller switches on I2C pull
-	   up voltage. At the time of writing this can cause systemcontroller's I2C
-	   unit to NAK first communication request. Future versions of
-	   systemcontroller will fix this by enabling I2C once pullup voltage is on.
-	   So myabe then we can remove probing but it can remain - there is no harm
-	   expected.
-	 */
 	probeSysController();
 
 	if(!logCtrlVersion()) {
