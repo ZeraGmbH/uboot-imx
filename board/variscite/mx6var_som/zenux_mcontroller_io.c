@@ -13,6 +13,8 @@ static void i2cInterCommandDelay(void)
     udelay(50);
 }
 
+static const int maxI2cRepetitions = 3;
+
 u16 readCmd(uint i2cAddr, u16 cmdId, u8 *readBuff)
 {
     u8 requestBuff[16];
@@ -52,6 +54,17 @@ u16 readCmd(uint i2cAddr, u16 cmdId, u8 *readBuff)
     return bytesRead;
 }
 
+u16 readCmdWithRepeatOnError(uint i2cAddr, u16 cmdId, u8 *readBuff)
+{
+    u16 bytesRead = 0;
+    for(int i=0; i<maxI2cRepetitions; i++) {
+        bytesRead = readCmd(i2cAddr, cmdId, readBuff);
+        if(bytesRead > 0)
+            return bytesRead;
+    }
+    return 0;
+}
+
 bool writeCmd(uint i2cAddr, u16 cmdId, u8 *cmdParam, u8 paramLen)
 {
     u8 requestBuff[512];
@@ -78,6 +91,16 @@ bool writeCmd(uint i2cAddr, u16 cmdId, u8 *cmdParam, u8 paramLen)
     return allOk;
 
 }
+
+bool writeCmdWithRepeatOnError(uint i2cAddr, u16 cmdId, u8 *cmdParam, u8 paramLen)
+{
+    for(int i=0; i<maxI2cRepetitions; i++) {
+        if(writeCmd(i2cAddr, cmdId, cmdParam, paramLen))
+            return true;
+    }
+    return false;
+}
+
 
 static bool decodeRequestResponse(u8 *response, u16* responseLen)
 {
