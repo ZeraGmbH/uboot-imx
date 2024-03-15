@@ -189,10 +189,12 @@
 
 #define VIDEO_ENV_SETTINGS \
 	"videoargs=" \
-		"if enableLcdWatchdog; then " \
-			"echo Start LCD watchdog on systemcontroller... OK;" \
-		"else " \
-			"echo Start LCD watchdog on systemcontroller... ERROR;" \
+		"if test ${zera_device} = mt310s2; then " \
+			"if enableLcdWatchdog; then " \
+				"echo Start LCD watchdog on systemcontroller... OK;" \
+			"else " \
+				"echo Start LCD watchdog on systemcontroller... ERROR;" \
+			"fi; " \
 		"fi; " \
 		"setenv bootargs ${bootargs} " \
 			"video=mxcfb0:dev=ldb; " \
