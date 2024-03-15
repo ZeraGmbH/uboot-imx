@@ -61,6 +61,8 @@ u16 readCmdWithRepeatOnError(uint i2cAddr, u16 cmdId, u8 *readBuff)
         bytesRead = readCmd(i2cAddr, cmdId, readBuff);
         if(bytesRead > 0)
             return bytesRead;
+        if(i<maxI2cRepetitions-1)
+            mdelay(100);
     }
     return 0;
 }
@@ -97,6 +99,8 @@ bool writeCmdWithRepeatOnError(uint i2cAddr, u16 cmdId, u8 *cmdParam, u8 paramLe
     for(int i=0; i<maxI2cRepetitions; i++) {
         if(writeCmd(i2cAddr, cmdId, cmdParam, paramLen))
             return true;
+        if(i<maxI2cRepetitions-1)
+            mdelay(100);
     }
     return false;
 }
