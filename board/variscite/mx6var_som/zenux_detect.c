@@ -16,7 +16,7 @@ void zenux_detect(void)
 {
 	puts("U-boot - lcd enums matching with system-controller!\n");
 	puts("ZENUX device detection started...\n");
-	probeSysController();
+	enforceStopBitOnSyscontrollerI2c();
 
 	if(!logCtrlVersion()) {
 		puts("Syscontroller not found!\n");

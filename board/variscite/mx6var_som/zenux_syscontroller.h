@@ -6,7 +6,7 @@
 
 #ifndef CONFIG_SPL_BUILD
 
-bool probeSysController(void);
+bool enforceStopBitOnSyscontrollerI2c(void);
 bool readCTRLVersion(char* receivedVersion);
 bool readInstrumentClass(char* receivedClass);
 bool readDisplayType(u8* receivedType);

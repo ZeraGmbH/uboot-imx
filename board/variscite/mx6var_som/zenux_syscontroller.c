@@ -24,12 +24,12 @@ const u16 cmdIdLcdStartWatchdog = 0x0043;
    Update: Systemcontroller was fixed: I2c unit is off while system powerered
    off.
  */
-bool probeSysController(void)
+bool enforceStopBitOnSyscontrollerI2c(void)
 {
     int ret;
     i2c_set_bus_num(SYS_I2C_NUM);
     ret = i2c_probe(SYS_I2C_ADR);
-    udelay(50);   // avoid sporadic NACK from uC
+    udelay(50);
     return 0 == ret;
 }
 
