@@ -10,6 +10,7 @@
  */
 
 #include "zenux_detect.h"
+#include "zenux_detect_class.h"
 #include "zenux_syscontroller.h"
 
 #include <common.h>
@@ -1357,9 +1358,11 @@ int board_late_init(void)
 #endif
 	puts("\n");
 	zenux_detect();
-	puts("Stop LCD watchdog on systemcontroller... ");
-	if(disableLcdWatchdog())
-		puts("OK\n");
+	if(isClassMt310s2()) {
+		puts("Stop MT310s2 LCD watchdog on systemcontroller... ");
+		if(disableLcdWatchdog())
+			puts("OK\n");
+	}
 	puts("\n");
 	return 0;
 }

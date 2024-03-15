@@ -28,6 +28,16 @@ const char* deduceClass(const char* instrumentClass)
 	return ubootEnvClassNames[(int)classType];
 }
 
+bool isClassCom5003(void)
+{
+	return classType == CLASS_COM5003;
+}
+
+bool isClassMt310s2(void)
+{
+	return classType == CLASS_MT310S2;
+}
+
 void setClassCom5003(void)
 {
 	classType = CLASS_COM5003;
