@@ -128,7 +128,22 @@
 			"fi; " \
 		"else " \
 			"bootm; " \
-		"fi;\0"
+		"fi;\0" \
+	"rescue_status=-1\0" \
+	"testrescue=usb start; " \
+		"usb storage; " \
+		"if test $? -eq 0; then "\
+			"if test -e usb 0:1 /rescue; then " \
+				"echo 'USB rescue system found. Booting...'; " \
+				"setenv rescue_status 1; " \
+			"else "\
+				"echo 'USB found but not rescue system detected. Continue'; "\
+				"setenv rescue_status 2; "\
+			"fi; "\
+		"else "\
+			"echo 'No USB storage found'; "\
+			"setenv rescue_status 3; " \
+		"fi; \0"
 
 
 #define MMC_BOOTCMD \
