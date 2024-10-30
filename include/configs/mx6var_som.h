@@ -151,6 +151,9 @@
 			"setenv rescue_status 3; " \
 		"fi; \0" \
 	"testupdateinprogress=" \
+		"if run loadbootenv; then " \
+			"run importbootenv; " \
+		"fi; " \
 		"if test ${updateinprogress} -eq 1; then " \
 			"echo 'Boot device set to internal emmc';" \
 			"setenv mmcblk 0; " \
@@ -159,11 +162,10 @@
 			"echo 'Boot device set to SD';" \
 			"setenv mmcblk 1; " \
 			"setenv mmcdev 0; " \
-		"fi; " \
-		"mmc dev ${mmcdev};" \
-		"mmc rescan; \0" \
+		"fi; \0" \
 
 #define MMC_BOOTCMD \
+	"run testupdateinprogress; " \
 	"run testrescue; "\
 	"if test ${rescue_status} -eq 1; then "\
 		"usb dev ${mmcdev}; " \
@@ -171,10 +173,6 @@
 		"mmc dev ${mmcdev}; " \
 		"mmc rescan; " \
 	"fi; " \
-	"if run loadbootenv; then " \
-		"run importbootenv; " \
-	"fi; " \
-	"run testupdateinprogress; " \
 	"if run loadbootscript; then " \
 		"run bootscript; " \
 	"else " \
