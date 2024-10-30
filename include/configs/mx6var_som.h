@@ -159,8 +159,9 @@
 			"echo 'Boot device set to SD';" \
 			"setenv mmcblk 1; " \
 			"setenv mmcdev 0; " \
-		"fi;\0 " 
-
+		"fi; " \
+		"mmc dev ${mmcdev};" \
+		"mmc rescan; \0" \
 
 #define MMC_BOOTCMD \
 	"run testrescue; "\
