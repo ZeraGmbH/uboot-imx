@@ -149,7 +149,15 @@
 			"echo 'No USB storage found'; "\
 			"setenv rootdev mmcblk${mmcblk}p${mmcrootpart}; "\
 			"setenv rescue_status 3; " \
-		"fi; \0"
+		"fi; \0" \
+	"testupdateinprogress=" \
+		"if test ${updateinprogress} -eq 1; then " \
+			"setenv mmcblk 0; " \
+			"setenv mmcdev 1; " \
+		"else " \
+			"setenv mmcblk 1; " \
+			"setenv mmcdev 0; " \
+		"fi;\0 " 
 
 
 #define MMC_BOOTCMD \
@@ -166,6 +174,7 @@
 	"if run loadbootscript; then " \
 		"run bootscript; " \
 	"else " \
+		"run testupdateinprogress; " \
 		"if run loaduimage; then " \
 			"run mmcboot; " \
 		"else " \
