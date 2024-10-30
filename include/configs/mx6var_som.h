@@ -152,9 +152,11 @@
 		"fi; \0" \
 	"testupdateinprogress=" \
 		"if test ${updateinprogress} -eq 1; then " \
+			"echo 'Boot device set to internal emmc';" \
 			"setenv mmcblk 0; " \
 			"setenv mmcdev 1; " \
 		"else " \
+			"echo 'Boot device set to SD';" \
 			"setenv mmcblk 1; " \
 			"setenv mmcdev 0; " \
 		"fi;\0 " 
@@ -171,10 +173,10 @@
 	"if run loadbootenv; then " \
 		"run importbootenv; " \
 	"fi; " \
+	"run testupdateinprogress; " \
 	"if run loadbootscript; then " \
 		"run bootscript; " \
 	"else " \
-		"run testupdateinprogress; " \
 		"if run loaduimage; then " \
 			"run mmcboot; " \
 		"else " \
