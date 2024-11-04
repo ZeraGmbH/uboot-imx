@@ -154,7 +154,7 @@
 		"if run loadbootenv; then " \
 			"run importbootenv; " \
 		"fi; " \
-		"if test ${updateinprogress} -eq 1; then " \
+		"if test "${updateinprogress}" -eq 1; then " \
 			"echo 'Boot device set to internal emmc';" \
 			"setenv mmcblk 0; " \
 			"setenv mmcdev 1; " \
