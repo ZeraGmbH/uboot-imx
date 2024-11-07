@@ -98,9 +98,8 @@
 	"mmcautodetect=yes\0" \
 	"mmcbootpart=1\0" \
 	"mmcrootpart=" __stringify(MMC_ROOT_PART) "\0" \
-    "rootdev=-1\0" \
 	"mmcargs=setenv bootargs console=${console},${baudrate} " \
-		"root=/dev/${rootdev} rootwait rw\0" \
+		"root=/dev/mmcblk${mmcblk}p${mmcrootpart} rootwait rw\0" \
 	"loadbootenv=" \
 		"load mmc ${mmcdev}:${mmcbootpart} ${loadaddr} ${bootdir}/${bootenv};\0" \
 	"importbootenv=echo Importing bootenv from mmc ...; " \
@@ -130,11 +129,11 @@
 		"else " \
 			"bootm; " \
 		"fi;\0" \
-	"testupdateinprogress=" \
+	"selectbootdevice=" \
 		"if run loadbootenv; then " \
 			"run importbootenv; " \
 		"fi; " \
-		"if test ${updateinprogress} -eq 1; then " \
+		"if test \"${selectedbootdev}\" -eq 0; then " \
 			"echo 'Boot device set to internal emmc';" \
 			"setenv mmcblk 0; " \
 			"setenv mmcdev 1; " \
@@ -145,7 +144,7 @@
 		"fi; \0" \
 
 #define MMC_BOOTCMD \
-	"run testupdateinprogress; " \
+	"run selectbootdevice; " \
 	"mmc dev ${mmcdev}; " \
 	"mmc rescan; " \
 	"if run loadbootscript; then " \
