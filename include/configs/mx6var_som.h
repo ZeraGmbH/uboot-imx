@@ -129,6 +129,7 @@
 		"else " \
 			"bootm; " \
 		"fi;\0" \
+	"selectedbootdev=-1\0" \
 	"selectbootdevice=" \
 		"if run loadbootenv; then " \
 			"run importbootenv; " \
