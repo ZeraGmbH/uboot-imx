@@ -102,17 +102,17 @@
 	"mmcargs=setenv bootargs console=${console},${baudrate} " \
 		"root=/dev/${rootdev} rootwait rw\0" \
 	"loadbootenv=" \
-		"load ${mmcusbswitch} ${mmcdev}:${mmcbootpart} ${loadaddr} ${bootdir}/${bootenv};\0" \
-	"importbootenv=echo Importing bootenv from mmc/usb ...; " \
+		"load mmc ${mmcdev}:${mmcbootpart} ${loadaddr} ${bootdir}/${bootenv};\0" \
+	"importbootenv=echo Importing bootenv from mmc ...; " \
 		"env import -t ${loadaddr} ${filesize}\0" \
 	"loadbootscript=" \
-		"load ${mmcusbswitch} ${mmcdev}:${mmcbootpart} ${loadaddr} ${bootdir}/${script};\0" \
+		"load mmc ${mmcdev}:${mmcbootpart} ${loadaddr} ${bootdir}/${script};\0" \
 	"bootscript=echo Running bootscript from mmc ...; " \
 		"source\0" \
-	"loaduimage=load ${mmcusbswitch} ${mmcdev}:${mmcbootpart} ${loadaddr} ${bootdir}/${uimage}\0" \
+	"loaduimage=load mmc ${mmcdev}:${mmcbootpart} ${loadaddr} ${bootdir}/${uimage}\0" \
 	"loadfdt=run findfdt; " \
 		"echo fdt_file=${fdt_file}; " \
-		"load ${mmcusbswitch} ${mmcdev}:${mmcbootpart} ${fdt_addr} ${bootdir}/${fdt_file}\0" \
+		"load mmc ${mmcdev}:${mmcbootpart} ${fdt_addr} ${bootdir}/${fdt_file}\0" \
 	"mmcboot=echo Booting from mmc ...; " \
 		"run mmcargs; " \
 		"run videoargs; " \
@@ -130,26 +130,6 @@
 		"else " \
 			"bootm; " \
 		"fi;\0" \
-	"rescue_status=-1\0" \
-	"mmcusbswitch=mmc\0" \
-	"testrescue=usb start; " \
-		"usb storage; " \
-		"if test $? -eq 0; then "\
-			"if test -e usb 0:1 /rescue; then " \
-				"echo 'USB rescue system found. Booting...'; " \
-				"setenv rescue_status 1; " \
-				"setenv mmcusbswitch usb; " \
-				"setenv rootdev sda2; " \
-			"else "\
-				"echo 'USB found but not rescue system detected. Continue'; "\
-				"setenv rescue_status 2; " \
-				"setenv rootdev mmcblk${mmcblk}p${mmcrootpart}; "\
-			"fi; "\
-		"else "\
-			"echo 'No USB storage found'; "\
-			"setenv rootdev mmcblk${mmcblk}p${mmcrootpart}; "\
-			"setenv rescue_status 3; " \
-		"fi; \0" \
 	"testupdateinprogress=" \
 		"if run loadbootenv; then " \
 			"run importbootenv; " \
@@ -166,13 +146,8 @@
 
 #define MMC_BOOTCMD \
 	"run testupdateinprogress; " \
-	"run testrescue; "\
-	"if test ${rescue_status} -eq 1; then "\
-		"usb dev ${mmcdev}; " \
-	"else " \
-		"mmc dev ${mmcdev}; " \
-		"mmc rescan; " \
-	"fi; " \
+	"mmc dev ${mmcdev}; " \
+	"mmc rescan; " \
 	"if run loadbootscript; then " \
 		"run bootscript; " \
 	"else " \
