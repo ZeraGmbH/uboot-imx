@@ -196,7 +196,7 @@
 
 #define OPT_ENV_SETTINGS \
 	"optargs="\
-		"setenv bootargs ${bootargs} ${kernelargs} consoleblank=0 fbcon=logo-pos:center vt.global_cursor_default=0 zera_device=${zera_device};\0"
+		"setenv bootargs ${bootargs} ${kernelargs} consoleblank=0 fbcon=logo-pos:center vt.global_cursor_default=0 zera_device=${zera_device} quiet;\0"
 
 #define VIDEO_ENV_SETTINGS \
 	"videoargs=" \
