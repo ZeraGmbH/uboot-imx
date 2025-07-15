@@ -206,11 +206,7 @@
 			"else " \
 				"echo Start LCD watchdog on systemcontroller... ERROR;" \
 			"fi; " \
-		"fi; " \
-		"setenv bootargs ${bootargs} " \
-			"video=mxcfb0:dev=ldb; " \
-		"setenv bootargs ${bootargs} " \
-			"video=mxcfb1:off video=mxcfb2:off video=mxcfb3:off;\0"
+		"fi;\0"
 
 
 #define CONFIG_EXTRA_ENV_SETTINGS \
