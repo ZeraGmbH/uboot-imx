@@ -220,7 +220,7 @@ static int wait_for_sr_state(struct mxc_i2c_bus *i2c_bus, unsigned state)
 			return sr;
 		WATCHDOG_RESET();
 		elapsed = get_timer(start_time);
-		if (elapsed > (CONFIG_SYS_HZ / 10))	/* .1 seconds */
+		if (elapsed > (CONFIG_SYS_HZ * 1))	/* 1 second for systemcontroller busy */
 			break;
 	}
 	printf("%s: failed sr=%x cr=%x state=%x\n", __func__,
