@@ -198,16 +198,7 @@
 	"optargs="\
 		"setenv bootargs ${bootargs} ${kernelargs} consoleblank=0 fbcon=logo-pos:center vt.global_cursor_default=0 zera_device=${zera_device} fdt_file=${fdt_file} quiet;\0"
 
-#define VIDEO_ENV_SETTINGS \
-	"videoargs=" \
-		"if test ${zera_device} = mt310s2; then " \
-			"if enableLcdWatchdog; then " \
-				"echo Start LCD watchdog on systemcontroller... OK;" \
-			"else " \
-				"echo Start LCD watchdog on systemcontroller... ERROR;" \
-			"fi; " \
-		"fi;\0"
-
+#define VIDEO_ENV_SETTINGS ""
 
 #define CONFIG_EXTRA_ENV_SETTINGS \
 	MMC_BOOT_ENV_SETTINGS \

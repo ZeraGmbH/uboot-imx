@@ -1358,11 +1358,6 @@ int board_late_init(void)
 #endif
 	puts("\n");
 	zenux_detect();
-	if(isClassMt310s2()) {
-		puts("Stop MT310s2 LCD watchdog on systemcontroller... ");
-		if(disableLcdWatchdog())
-			puts("OK\n");
-	}
 	puts("\n");
 	return 0;
 }
