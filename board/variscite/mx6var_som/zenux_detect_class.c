@@ -6,15 +6,14 @@
 enum ClassTypes
 {
 	CLASS_COM5003,
-	CLASS_MT310S2
+	CLASS_MT310S2,
+	CLASS_MT581S2
 };
-const char* instrumentClassNames[] = {
-	"COM5003",
-	"MT310s2"
-};
+
 const char* ubootEnvClassNames[] = {
 	"com5003",
-	"mt310s2"
+	"mt310s2",
+	"mt581s2"
 };
 
 enum ClassTypes classType = CLASS_COM5003;
@@ -23,6 +22,8 @@ const char* deduceClass(const char* instrumentClass)
 {
 	if(!strcmp(instrumentClass, "COM5003"))
 		setClassCom5003();
+	else if(!strcmp(instrumentClass, "MT581s2"))
+		setClassMt581s2();
 	else
 		setClassMt310s2();
 	return ubootEnvClassNames[(int)classType];
@@ -46,6 +47,11 @@ void setClassCom5003(void)
 void setClassMt310s2(void)
 {
 	classType = CLASS_MT310S2;
+}
+
+void setClassMt581s2(void)
+{
+	classType = CLASS_MT581S2;
 }
 
 void setUbootEnvClass(void)
