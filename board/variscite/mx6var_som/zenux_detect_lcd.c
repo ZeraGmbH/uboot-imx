@@ -9,6 +9,7 @@ enum LcdTypes
 	LCD_COM5003_INITIAL,
 	LCD_MT310S2_INITIAL,
 	LCD_COM5003_1280x800_Tianma_TM101JVHG32,
+	LCD_MT581S2_1280x800_Ampire_AM_1280800WJTZQW,
 	TOTAL_LCD_TYPES
 };
 
@@ -17,6 +18,7 @@ const char* envLcdDeviceTreeFileNames[] = {
 	"imx6q-var-som-zera-com.dtb",
 	"imx6q-var-som-zera-mt.dtb",
 	"imx6q-var-som-zera-com.1280x800_Tianma_TM101JVHG32.dtb",
+	"imx6q-var-som-zera-com.1280x800_Ampire_AM-1280800WJTZQW.dtb",
 };
 
 enum LcdTypes lcdType = LCD_COM5003_INITIAL;
