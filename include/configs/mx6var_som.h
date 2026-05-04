@@ -114,7 +114,6 @@
 		"load mmc ${mmcdev}:${mmcbootpart} ${fdt_addr} ${bootdir}/${fdt_file}\0" \
 	"mmcboot=echo Booting from mmc ...; " \
 		"run mmcargs; " \
-		"run videoargs; " \
 		"run optargs; " \
 		"if test ${boot_fdt} = yes || test ${boot_fdt} = try; then " \
 			"if run loadfdt; then " \
@@ -171,14 +170,12 @@
 	"bootcmd=" \
 		"if test ${rootfs_device} != emmc; then " \
 			"run nandargs; " \
-			"run videoargs; " \
 			"run optargs; " \
 			"echo booting from nand ...; " \
 			"run nandboot; " \
 		"else " \
 			"if test ${boot_device} != emmc; then " \
 				"run mmcargs; " \
-				"run videoargs; " \
 				"run optargs; " \
 				"echo booting from nand (rootfs on emmc)...; " \
 				"run nandboot; " \
@@ -198,12 +195,9 @@
 	"optargs="\
 		"setenv bootargs ${bootargs} ${kernelargs} consoleblank=0 fbcon=logo-pos:center vt.global_cursor_default=0 zera_device=${zera_device} fdt_file=${fdt_file} quiet;\0"
 
-#define VIDEO_ENV_SETTINGS ""
-
 #define CONFIG_EXTRA_ENV_SETTINGS \
 	MMC_BOOT_ENV_SETTINGS \
 	NAND_BOOT_ENV_SETTINGS \
-	VIDEO_ENV_SETTINGS \
 	OPT_ENV_SETTINGS \
 	"fdt_file=undefined\0" \
 	"fdt_addr=0x18000000\0" \
@@ -217,8 +211,7 @@
 	"console=" CONSOLE_DEV "\0" \
 	"netargs=setenv bootargs console=${console},${baudrate} " \
 		"root=/dev/nfs rw " \
-		"ip=dhcp nfsroot=${serverip}:${nfsroot},v3,tcp; " \
-		"run videoargs\0" \
+		"ip=dhcp nfsroot=${serverip}:${nfsroot},v3,tcp;\0" \
 	"netboot=echo Booting from net ...; " \
 		"run netargs; " \
 		"run optargs; " \
